@@ -1,0 +1,4 @@
+/* Page-specific styles for dashboard widgets */
+.page-dashboard .cards .card {
+    border: 1px solid rgba(126, 214, 223, 0.08);
+}

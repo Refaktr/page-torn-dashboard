@@ -1,0 +1,4 @@
+/* Page-specific styles for gym features */
+.page-gym .page-placeholder {
+    border-left: 4px solid #ff7f7f;
+}

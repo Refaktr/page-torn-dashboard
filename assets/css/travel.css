@@ -1,0 +1,4 @@
+/* Page-specific styles for travel features */
+.page-travel .page-placeholder {
+    border-left: 4px solid #c29bff;
+}
