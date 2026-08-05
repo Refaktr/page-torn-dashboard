@@ -11,6 +11,14 @@ const getApiKey = () => {
     return storedApiKey ? storedApiKey : '';
 }
 
+// Check if the API key is set, if not, prompt the user to set it in settings.
+const apiKey = getApiKey();
+
+if (!apiKey) {
+    alert('API key is not set. Please go to settings and set your Torn API key.');
+    window.location.href = 'pages/settings.html'; // Redirect to settings page
+}
+
 const fetchUserData = () => {
     const apiKey = getApiKey(); // Retrieve the API key from local storage
     
