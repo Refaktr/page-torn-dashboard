@@ -31,9 +31,60 @@
                 <p>This page is ready for market tools, stats, and pricing widgets.</p>
             </section>
 
-            <div class="card">
-                <h3>Market Tools</h3>
-                <p>Coming soon: Market tools for Torn, including price tracking, item analysis, and market trends.</p>
+            <section class="market-controls card">
+                <div class="market-controls-row">
+                    <div class="market-control-group">
+                        <label for="market-sort-select">Sort By</label>
+                        <select id="market-sort-select">
+                            <option value="market-desc">Market Price: High to Low</option>
+                            <option value="market-asc">Market Price: Low to High</option>
+                            <option value="vendor-buy-desc">Vendor Buy: High to Low</option>
+                            <option value="vendor-buy-asc">Vendor Buy: Low to High</option>
+                            <option value="circulation-desc">Circulation: High to Low</option>
+                            <option value="circulation-asc">Circulation: Low to High</option>
+                            <option value="name-asc">Name: A to Z</option>
+                            <option value="name-desc">Name: Z to A</option>
+                        </select>
+                    </div>
+
+                    <div class="market-control-group">
+                        <label for="market-type-filter">Type</label>
+                        <select id="market-type-filter">
+                            <option value="all">All Types</option>
+                            <option value="Primary">Primary</option>
+                            <option value="Secondary">Secondary</option>
+                            <option value="Melee">Melee</option>
+                            <option value="Temporary">Temporary</option>
+                            <option value="Armor">Armor</option>
+                            <option value="Ammunition">Ammunition</option>
+                            <option value="Attachments">Attachments</option>
+                            <option value="Medical">Medical</option>
+                            <option value="Drugs">Drugs</option>
+                            <option value="Boosters">Boosters</option>
+                            <option value="Plushies">Plushies</option>
+                            <option value="Flowers">Flowers</option>
+                            <option value="Cars">Cars</option>
+                            <option value="Collectibles">Collectibles</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="market-item-count" id="market-item-count">Loading items...</div>
+            </section>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Market Overview</h3>
+                    <p>Get a quick snapshot of the market trends and pricing.</p>
+                </div>
+                <div class="card">
+                    <h3>Stock Opportunities</h3>
+                    <p>Discover potential stock investments and their performance.</p>
+                </div>
+                <div class="card">
+                    <h3>Trading Tools</h3>
+                    <p>Access tools to help you make informed trading decisions.</p>
+                </div>
+
             </div>
         </main>
     </div>

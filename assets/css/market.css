@@ -2,3 +2,214 @@
 .page-market .page-placeholder {
     border-left: 4px solid #7ed6df;
 }
+
+.page-market .cards {
+    margin-top: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.page-market .market-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid #364056;
+    background: #242c3a;
+}
+
+.page-market .market-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.page-market .market-control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-market .market-controls label {
+    font-size: 13px;
+    color: #b7c4de;
+}
+
+.page-market .market-controls select {
+    background: #1b2230;
+    color: #e6ecfb;
+    border: 1px solid #405070;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 14px;
+}
+
+.page-market .market-item-count {
+    font-size: 13px;
+    color: #9aabca;
+}
+
+.page-market .market-item-card {
+    background: linear-gradient(180deg, #2a3040 0%, #222835 100%);
+    border: 1px solid #364056;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.page-market .market-item-head {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.page-market .market-item-image {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #1a1f2b;
+    border: 1px solid #3b465f;
+    padding: 6px;
+}
+
+.page-market .market-item-title-wrap {
+    min-width: 0;
+}
+
+.page-market .market-item-name {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.2;
+    color: #f2f6ff;
+}
+
+.page-market .market-item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.page-market .market-item-tag {
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #1d2533;
+    border: 1px solid #415072;
+    color: #b8c7e8;
+}
+
+.page-market .market-item-description {
+    margin: 0 0 14px;
+    color: #c4ccdb;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.page-market .market-item-values {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.page-market .market-value-block {
+    background: #1d2431;
+    border: 1px solid #37435b;
+    border-radius: 10px;
+    padding: 8px;
+    min-width: 0;
+}
+
+.page-market .market-value-block--market {
+    grid-column: 1 / -1;
+}
+
+.page-market .market-value-label {
+    font-size: 11px;
+    color: #95a2be;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+}
+
+.page-market .market-value-number {
+    font-size: clamp(12px, 1.2vw, 16px);
+    color: #7ed6df;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.page-market .market-value-number.is-good {
+    color: #6fe3a1;
+}
+
+.page-market .market-value-number.is-bad {
+    color: #ff8f8f;
+}
+
+.page-market .market-value-number.is-neutral {
+    color: #f6d57f;
+}
+
+.page-market .market-value-number.is-vendor-buy {
+    color: #8eb7ff;
+}
+
+.page-market .market-value-number.is-vendor-sell {
+    color: #f5b67a;
+}
+
+.page-market .market-item-meta {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    color: #aeb9cf;
+    font-size: 13px;
+}
+
+.page-market .market-item-meta strong {
+    color: #d5def1;
+    font-weight: 600;
+}
+
+.page-market .market-empty-state {
+    color: #f3be86;
+}
+
+@media (max-width: 640px) {
+    .page-market .market-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-market .market-controls-row {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-market .market-control-group {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-market .market-controls select {
+        width: 100%;
+    }
+
+    .page-market .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .page-market .market-item-values {
+        grid-template-columns: 1fr;
+    }
+}
