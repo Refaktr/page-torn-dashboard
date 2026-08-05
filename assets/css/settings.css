@@ -2,8 +2,25 @@
     margin-top: 10px;
 }
 
+.settingList {
+    display: grid;
+    gap: 12px;
+}
+
+.api-key-card {
+    max-width: 720px;
+}
+
+.settings-label {
+    display: block;
+    margin-top: 10px;
+    color: #b7c4de;
+    font-size: 13px;
+}
+
 input[type="text"] {
-    width: 10%;
+    width: 100%;
+    max-width: 540px;
     padding: 10px;
     margin-top: 10px;
     border: 1px solid #ccc;
@@ -15,7 +32,6 @@ input[type="text"] {
 button {
     padding: 10px 20px;
     margin-top: 10px;
-    margin-left: 10px;
     background-color: #474747;
     color: #fff;
     border: none;
@@ -24,7 +40,28 @@ button {
     border-left: 3px solid #ff0000;
 }
 
+.settings-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.button-secondary {
+    background-color: #2b3240;
+    border-left-color: #6f89b3;
+}
+
+.settings-note {
+    margin-top: 10px;
+    color: #a9b6d0;
+    font-size: 13px;
+}
+
 select {
+    display: block;
+    width: 100%;
+    max-width: 540px;
     padding: 10px;
     margin-top: 10px;
     border: 1px solid #ccc;

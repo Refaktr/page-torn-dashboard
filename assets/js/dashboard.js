@@ -1,9 +1,12 @@
 // Make an API call to fetch user data from the Torn API
 
-var API_KEY = "";
-
 const getApiKey = () => {
-    // Retrieve the API key from local storage
+    // Prefer session key, then fallback to remembered local key.
+    const sessionApiKey = sessionStorage.getItem('tornApiKey');
+    if (sessionApiKey) {
+        return sessionApiKey;
+    }
+
     const storedApiKey = localStorage.getItem('tornApiKey');
     return storedApiKey ? storedApiKey : '';
 }

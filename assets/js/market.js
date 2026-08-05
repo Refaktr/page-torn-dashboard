@@ -1,6 +1,11 @@
 // A function to get the api key from local storage
 function getApiKey() {
     try {
+        var sessionApiKey = sessionStorage.getItem('tornApiKey');
+        if (sessionApiKey) {
+            return sessionApiKey;
+        }
+
         return localStorage.getItem('tornApiKey');
     } catch (error) {
         console.error('Error retrieving API key from local storage:', error);
