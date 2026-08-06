@@ -25,14 +25,84 @@
         <main class="content">
             <div class="header">
                 <h1>Faction</h1>
-                <span>Coming Soon</span>
+                <span>Scout</span>
             </div>
-            <section class="page-placeholder">
-                <p>This page is ready for faction members, wars, and chain tracking.</p>
+
+            <section class="card faction-hero">
+                <div>
+                    <p class="faction-eyebrow">Torn Faction Scout</p>
+                    <h2>Faction member roster with live status color-coding.</h2>
+                    <p class="faction-lede">Search a faction, load member details, and inspect position, status, revive eligibility, and last action.</p>
+                </div>
+                <div class="faction-hero-card">
+                    <div class="faction-hero-card-label">Roster columns</div>
+                    <ul>
+                        <li>Name</li>
+                        <li>Level</li>
+                        <li>Position</li>
+                        <li>Status</li>
+                        <li>Revive</li>
+                        <li>Last Action</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="card faction-controls">
+                <form id="faction-form" class="faction-form-grid">
+                    <label>
+                        <span>Faction name</span>
+                        <input id="faction-name" name="factionName" type="text" placeholder="Enter a faction name">
+                    </label>
+
+                    <div class="faction-button-row">
+                        <button type="submit" class="primary">Load faction</button>
+                        <button type="button" id="demo-button" class="secondary">Load demo data</button>
+                        <label class="faction-toggle-row" for="auto-refresh-toggle">
+                            <input id="auto-refresh-toggle" type="checkbox">
+                            <span>Auto-refresh every 5s</span>
+                        </label>
+                    </div>
+                </form>
+
+                <p class="faction-note">Tip: store your API key on the Settings page first. This page uses that saved key automatically.</p>
+            </section>
+
+            <section class="card faction-status-strip">
+                <div><span class="faction-label">Faction</span><strong id="faction-title">No faction loaded</strong></div>
+                <div><span class="faction-label">Members</span><strong id="member-count">0</strong></div>
+                <div><span class="faction-label">Source</span><strong id="data-source">Not loaded</strong></div>
+            </section>
+
+            <section class="card faction-table-panel">
+                <div class="faction-table-toolbar">
+                    <h2>Roster</h2>
+                    <span id="message" class="faction-message">Load a faction to begin.</span>
+                </div>
+
+                <div class="faction-table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort-key="name">Name</button></th>
+                                <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort-key="level">Lvl</button></th>
+                                <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort-key="position">Position</button></th>
+                                <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort-key="status">Status</button></th>
+                                <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort-key="revive">Revive</button></th>
+                                <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort-key="lastAction">Last Action</button></th>
+                            </tr>
+                        </thead>
+                        <tbody id="member-body">
+                            <tr class="empty-row">
+                                <td colspan="6">No roster loaded yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </main>
     </div>
 
     <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/faction.js"></script>
 </body>
 </html>
