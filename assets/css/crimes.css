@@ -2,3 +2,128 @@
 .page-crimes .page-placeholder {
     border-left: 4px solid #8fd6a8;
 }
+
+.page-crimes .crimes-controls {
+    margin-top: 20px;
+    border: 1px solid #325143;
+    background: #21342b;
+}
+
+.page-crimes .crimes-controls-row {
+    color: #c8decf;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.page-crimes .crimes-summary {
+    margin-top: 18px;
+}
+
+.page-crimes .crimes-list {
+    margin-top: 20px;
+    display: grid;
+    gap: 14px;
+}
+
+.page-crimes .crime-card {
+    border: 1px solid #3b4c63;
+    background: linear-gradient(180deg, #293142 0%, #222938 100%);
+}
+
+.page-crimes .crime-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.page-crimes .crime-id {
+    font-size: 18px;
+    font-weight: 700;
+    color: #e8eeff;
+}
+
+.page-crimes .crime-rate {
+    font-size: 13px;
+    color: #9fd3b6;
+}
+
+.page-crimes .crime-meta-line {
+    margin-bottom: 10px;
+    color: #a9b7d2;
+    font-size: 13px;
+}
+
+.page-crimes .crime-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.page-crimes .crime-stat {
+    padding: 8px;
+    border: 1px solid #3c4a5f;
+    border-radius: 8px;
+    background: #1d2431;
+}
+
+.page-crimes .crime-stat-label {
+    display: block;
+    color: #9eabc6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+}
+
+.page-crimes .crime-stat-value {
+    color: #dbe4fb;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.page-crimes .subcrime-title {
+    color: #d2ddf5;
+    font-weight: 600;
+    margin: 8px 0;
+}
+
+.page-crimes .subcrime-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #39475d;
+    border-radius: 8px;
+}
+
+.page-crimes .subcrime-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.page-crimes .subcrime-table th,
+.page-crimes .subcrime-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #2f3c50;
+    font-size: 13px;
+}
+
+.page-crimes .subcrime-table th {
+    color: #b7c4de;
+    background: #1f2836;
+}
+
+.page-crimes .subcrime-table td {
+    color: #e0e7f8;
+}
+
+.page-crimes .subcrime-empty {
+    color: #9fb0ce;
+    font-size: 13px;
+}
+
+.page-crimes .crime-error {
+    border-left: 4px solid #f08f8f;
+}

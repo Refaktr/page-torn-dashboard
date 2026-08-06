@@ -1,0 +1,89 @@
+{
+  "subcrimes": [
+    {
+      "id": 60,
+      "name": "Recover College Campus",
+      "nerve_cost": 4
+    },
+    {
+      "id": 51,
+      "name": "Sell Card Details",
+      "nerve_cost": 6
+    },
+    {
+      "id": 53,
+      "name": "Install College Campus",
+      "nerve_cost": 6
+    },
+    {
+      "id": 50,
+      "name": "Recover Bus Station",
+      "nerve_cost": 4
+    },
+    {
+      "id": 58,
+      "name": "Install Bank Branch",
+      "nerve_cost": 6
+    },
+    {
+      "id": 55,
+      "name": "Install Post Office",
+      "nerve_cost": 6
+    },
+    {
+      "id": 61,
+      "name": "Recover Gas Station",
+      "nerve_cost": 4
+    },
+    {
+      "id": 54,
+      "name": "Install Gas Station",
+      "nerve_cost": 6
+    },
+    {
+      "id": 56,
+      "name": "Install Airport Terminal",
+      "nerve_cost": 6
+    },
+    {
+      "id": 52,
+      "name": "Install Subway Station",
+      "nerve_cost": 6
+    },
+    {
+      "id": 57,
+      "name": "Install Casino Lobby",
+      "nerve_cost": 6
+    },
+    {
+      "id": 49,
+      "name": "Install Bus Station",
+      "nerve_cost": 6
+    },
+    {
+      "id": 59,
+      "name": "Recover Subway Station",
+      "nerve_cost": 4
+    },
+    {
+      "id": 62,
+      "name": "Recover Post Office",
+      "nerve_cost": 4
+    },
+    {
+      "id": 63,
+      "name": "Recover Airport Terminal",
+      "nerve_cost": 4
+    },
+    {
+      "id": 65,
+      "name": "Recover Bank Branch",
+      "nerve_cost": 4
+    },
+    {
+      "id": 64,
+      "name": "Recover Casino Lobby",
+      "nerve_cost": 4
+    }
+  ]
+}

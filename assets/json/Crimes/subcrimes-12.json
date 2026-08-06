@@ -1,0 +1,119 @@
+{
+  "subcrimes": [
+    {
+      "id": 290,
+      "name": "Email Farming",
+      "nerve_cost": 8
+    },
+    {
+      "id": 291,
+      "name": "Spam : Prize scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 292,
+      "name": "Prize Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 293,
+      "name": "Spam : Family scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 294,
+      "name": "Family Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 295,
+      "name": "Spam : Delivery scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 296,
+      "name": "Delivery Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 297,
+      "name": "Spam : Charity scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 298,
+      "name": "Charity Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 299,
+      "name": "Spam : Tech support scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 300,
+      "name": "Tech support Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 301,
+      "name": "Spam : Vacation scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 302,
+      "name": "Vacation Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 303,
+      "name": "Spam : Tax scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 304,
+      "name": "Tax Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 305,
+      "name": "Spam : Advance-fee scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 306,
+      "name": "Advance-fee Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 307,
+      "name": "Spam : Job scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 308,
+      "name": "Job Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 309,
+      "name": "Spam : Romance scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 310,
+      "name": "Romance Scam",
+      "nerve_cost": 3
+    },
+    {
+      "id": 311,
+      "name": "Spam : Investment scam",
+      "nerve_cost": 8
+    },
+    {
+      "id": 312,
+      "name": "Investment Scam",
+      "nerve_cost": 3
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "subcrimes": [
+    {
+      "id": 12,
+      "name": "West Side",
+      "nerve_cost": 3
+    },
+    {
+      "id": 13,
+      "name": "North Side",
+      "nerve_cost": 3
+    },
+    {
+      "id": 14,
+      "name": "Red-Light District",
+      "nerve_cost": 3
+    },
+    {
+      "id": 15,
+      "name": "Residential District",
+      "nerve_cost": 3
+    },
+    {
+      "id": 16,
+      "name": "City Center",
+      "nerve_cost": 3
+    },
+    {
+      "id": 17,
+      "name": "Financial District",
+      "nerve_cost": 3
+    },
+    {
+      "id": 18,
+      "name": "East Side",
+      "nerve_cost": 3
+    }
+  ]
+}

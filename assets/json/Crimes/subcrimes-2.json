@@ -1,0 +1,24 @@
+{
+  "subcrimes": [
+    {
+      "id": 8,
+      "name": "Copy DVDs",
+      "nerve_cost": 2
+    },
+    {
+      "id": 9,
+      "name": "Sell Counterfeit DVDs",
+      "nerve_cost": 5
+    },
+    {
+      "id": 10,
+      "name": "Set Up Online Store",
+      "nerve_cost": 10
+    },
+    {
+      "id": 11,
+      "name": "Online Store",
+      "nerve_cost": 1
+    }
+  ]
+}

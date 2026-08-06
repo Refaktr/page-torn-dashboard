@@ -1,0 +1,359 @@
+{
+  "subcrimes": [
+    {
+      "id": 71,
+      "name": "Beach Hut - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 69,
+      "name": "Tool Shed - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 76,
+      "name": "Bungalow - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 75,
+      "name": "Bungalow - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 70,
+      "name": "Tool Shed - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 66,
+      "name": "Residential targets",
+      "nerve_cost": 3
+    },
+    {
+      "id": 67,
+      "name": "Commercial targets",
+      "nerve_cost": 3
+    },
+    {
+      "id": 68,
+      "name": "Industrial targets",
+      "nerve_cost": 3
+    },
+    {
+      "id": 77,
+      "name": "Cottage - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 73,
+      "name": "Mobile Home - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 74,
+      "name": "Mobile Home - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 72,
+      "name": "Beach Hut - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 85,
+      "name": "Farmhouse - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 90,
+      "name": "Luxury Villa - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 78,
+      "name": "Cottage - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 87,
+      "name": "Lake House - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 80,
+      "name": "Apartment - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 79,
+      "name": "Apartment - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 86,
+      "name": "Farmhouse - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 89,
+      "name": "Luxury Villa - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 82,
+      "name": "Suburban Home - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 81,
+      "name": "Suburban Home - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 83,
+      "name": "Secluded Cabin - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 84,
+      "name": "Secluded Cabin - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 88,
+      "name": "Lake House - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 92,
+      "name": "Manor House - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 93,
+      "name": "Self Storage Facility - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 96,
+      "name": "Postal Office - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 95,
+      "name": "Postal Office - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 94,
+      "name": "Self Storage Facility - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 91,
+      "name": "Manor House - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 97,
+      "name": "Funeral Parlor - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 98,
+      "name": "Funeral Parlor - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 99,
+      "name": "Market - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 100,
+      "name": "Market - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 101,
+      "name": "Cleaning Agency - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 102,
+      "name": "Cleaning Agency - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 103,
+      "name": "Barbershop - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 104,
+      "name": "Barbershop - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 105,
+      "name": "Liquor Store - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 106,
+      "name": "Liquor Store - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 107,
+      "name": "Dentists Office - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 108,
+      "name": "Dentists Office - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 109,
+      "name": "Chiropractors - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 110,
+      "name": "Chiropractors - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 112,
+      "name": "Recruitment Agency - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 111,
+      "name": "Recruitment Agency - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 113,
+      "name": "Advertising Agency - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 114,
+      "name": "Advertisement Agency - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 115,
+      "name": "Shipyard - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 116,
+      "name": "Shipyard - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 117,
+      "name": "Dockside Warehouse - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 118,
+      "name": "Dockside Warehouse - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 119,
+      "name": "Farm Storage Unit - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 120,
+      "name": "Farm Storage Unit - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 121,
+      "name": "Printing Works - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 122,
+      "name": "Printing Works - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 123,
+      "name": "Brewery - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 124,
+      "name": "Brewery - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 125,
+      "name": "Truckyard - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 126,
+      "name": "Truckyard - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 127,
+      "name": "Old Factory - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 128,
+      "name": "Old Factory - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 129,
+      "name": "Slaughterhouse - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 130,
+      "name": "Slaughterhouse - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 131,
+      "name": "Paper Mill - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 132,
+      "name": "Paper Mill - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 133,
+      "name": "Foundry - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 134,
+      "name": "Foundry - Burgle",
+      "nerve_cost": 6
+    },
+    {
+      "id": 135,
+      "name": "Fertilizer Plant - Case",
+      "nerve_cost": 2
+    },
+    {
+      "id": 136,
+      "name": "Fertilizer Plant - Burgle",
+      "nerve_cost": 6
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "subcrimes": [
+    {
+      "id": 27,
+      "name": "Young woman",
+      "nerve_cost": 5
+    },
+    {
+      "id": 29,
+      "name": "Elderly man",
+      "nerve_cost": 5
+    },
+    {
+      "id": 28,
+      "name": "Young man",
+      "nerve_cost": 5
+    },
+    {
+      "id": 30,
+      "name": "Elderly woman",
+      "nerve_cost": 5
+    },
+    {
+      "id": 31,
+      "name": "Businessman",
+      "nerve_cost": 5
+    },
+    {
+      "id": 33,
+      "name": "Student",
+      "nerve_cost": 5
+    },
+    {
+      "id": 38,
+      "name": "Thug",
+      "nerve_cost": 5
+    },
+    {
+      "id": 32,
+      "name": "Businesswoman",
+      "nerve_cost": 5
+    },
+    {
+      "id": 37,
+      "name": "Drunk woman",
+      "nerve_cost": 5
+    },
+    {
+      "id": 34,
+      "name": "Homeless person",
+      "nerve_cost": 5
+    },
+    {
+      "id": 35,
+      "name": "Classy lady",
+      "nerve_cost": 5
+    },
+    {
+      "id": 36,
+      "name": "Drunk man",
+      "nerve_cost": 5
+    },
+    {
+      "id": 40,
+      "name": "Mobster",
+      "nerve_cost": 5
+    },
+    {
+      "id": 39,
+      "name": "Gang member",
+      "nerve_cost": 5
+    },
+    {
+      "id": 42,
+      "name": "Junkie",
+      "nerve_cost": 5
+    },
+    {
+      "id": 43,
+      "name": "Cyclist",
+      "nerve_cost": 5
+    },
+    {
+      "id": 41,
+      "name": "Laborer",
+      "nerve_cost": 5
+    },
+    {
+      "id": 44,
+      "name": "Postal worker",
+      "nerve_cost": 5
+    },
+    {
+      "id": 45,
+      "name": "Sex worker",
+      "nerve_cost": 5
+    },
+    {
+      "id": 46,
+      "name": "Rich kid",
+      "nerve_cost": 5
+    },
+    {
+      "id": 47,
+      "name": "Jogger",
+      "nerve_cost": 5
+    },
+    {
+      "id": 48,
+      "name": "Police officer",
+      "nerve_cost": 5
+    }
+  ]
+}

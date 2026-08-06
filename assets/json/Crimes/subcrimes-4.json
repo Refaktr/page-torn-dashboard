@@ -1,0 +1,44 @@
+{
+  "subcrimes": [
+    {
+      "id": 19,
+      "name": "Sally's Sweet Shop",
+      "nerve_cost": 4
+    },
+    {
+      "id": 20,
+      "name": "Bits 'n' Bobs",
+      "nerve_cost": 4
+    },
+    {
+      "id": 22,
+      "name": "Super Store",
+      "nerve_cost": 4
+    },
+    {
+      "id": 21,
+      "name": "TC Clothing",
+      "nerve_cost": 4
+    },
+    {
+      "id": 23,
+      "name": "Big Al's Gun Shop",
+      "nerve_cost": 4
+    },
+    {
+      "id": 24,
+      "name": "Jewelry Store",
+      "nerve_cost": 4
+    },
+    {
+      "id": 217,
+      "name": "Cyber Force",
+      "nerve_cost": 4
+    },
+    {
+      "id": 218,
+      "name": "Pharmacy",
+      "nerve_cost": 4
+    }
+  ]
+}

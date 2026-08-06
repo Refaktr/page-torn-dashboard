@@ -1,0 +1,34 @@
+{
+  "subcrimes": [
+    {
+      "id": 1,
+      "name": "Search the Trash",
+      "nerve_cost": 2
+    },
+    {
+      "id": 2,
+      "name": "Search the Subway",
+      "nerve_cost": 2
+    },
+    {
+      "id": 3,
+      "name": "Search the Junkyard",
+      "nerve_cost": 2
+    },
+    {
+      "id": 4,
+      "name": "Search the Beach",
+      "nerve_cost": 2
+    },
+    {
+      "id": 5,
+      "name": "Search the Cemetery",
+      "nerve_cost": 2
+    },
+    {
+      "id": 6,
+      "name": "Search the Fountain",
+      "nerve_cost": 2
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "subcrimes": [
+    {
+      "id": 137,
+      "name": "Audience",
+      "nerve_cost": 4
+    },
+    {
+      "id": 138,
+      "name": "Recruit Shill",
+      "nerve_cost": 4
+    },
+    {
+      "id": 139,
+      "name": "Recruit Pickpocket",
+      "nerve_cost": 4
+    },
+    {
+      "id": 140,
+      "name": "Shell Game - Introduction",
+      "nerve_cost": 2
+    },
+    {
+      "id": 141,
+      "name": "Find the Lady - Introduction",
+      "nerve_cost": 2
+    },
+    {
+      "id": 142,
+      "name": "Cornhole - Introduction",
+      "nerve_cost": 2
+    },
+    {
+      "id": 143,
+      "name": "Snail Racing - Introduction",
+      "nerve_cost": 2
+    },
+    {
+      "id": 144,
+      "name": "Shill Collect",
+      "nerve_cost": 2
+    },
+    {
+      "id": 145,
+      "name": "Pickpocket collect",
+      "nerve_cost": 2
+    },
+    {
+      "id": 146,
+      "name": "Shell Game - Lose",
+      "nerve_cost": 2
+    },
+    {
+      "id": 147,
+      "name": "Find the Lady - Lose",
+      "nerve_cost": 2
+    },
+    {
+      "id": 148,
+      "name": "Cornhole - Lose",
+      "nerve_cost": 2
+    },
+    {
+      "id": 149,
+      "name": "Snail Racing - Lose",
+      "nerve_cost": 2
+    },
+    {
+      "id": 150,
+      "name": "Shell Game - Win",
+      "nerve_cost": 2
+    },
+    {
+      "id": 151,
+      "name": "Find the Lady - Win",
+      "nerve_cost": 2
+    },
+    {
+      "id": 152,
+      "name": "Cornhole - Win",
+      "nerve_cost": 2
+    },
+    {
+      "id": 153,
+      "name": "Snail Racing - Win",
+      "nerve_cost": 2
+    }
+  ]
+}

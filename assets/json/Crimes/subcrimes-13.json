@@ -1,0 +1,44 @@
+{
+  "subcrimes": [
+    {
+      "id": 328,
+      "name": "Inquire",
+      "nerve_cost": 0
+    },
+    {
+      "id": 329,
+      "name": "Make Entry",
+      "nerve_cost": 3
+    },
+    {
+      "id": 330,
+      "name": "Plant Evidence",
+      "nerve_cost": 5
+    },
+    {
+      "id": 331,
+      "name": "Place Combustible",
+      "nerve_cost": 5
+    },
+    {
+      "id": 332,
+      "name": "Ignite Fire",
+      "nerve_cost": 5
+    },
+    {
+      "id": 333,
+      "name": "Stoke Fire",
+      "nerve_cost": 5
+    },
+    {
+      "id": 334,
+      "name": "Dampen Fire",
+      "nerve_cost": 5
+    },
+    {
+      "id": 335,
+      "name": "Collect",
+      "nerve_cost": 2
+    }
+  ]
+}

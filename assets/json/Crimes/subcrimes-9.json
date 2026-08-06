@@ -1,0 +1,254 @@
+{
+  "subcrimes": [
+    {
+      "id": 157,
+      "name": "General Waste - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 160,
+      "name": "General Waste - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 158,
+      "name": "General Waste - Burn",
+      "nerve_cost": 10
+    },
+    {
+      "id": 159,
+      "name": "General Waste - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 161,
+      "name": "General Waste - Dissolve",
+      "nerve_cost": 14
+    },
+    {
+      "id": 163,
+      "name": "Old Furniture - Burn",
+      "nerve_cost": 10
+    },
+    {
+      "id": 162,
+      "name": "Old Furniture - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 164,
+      "name": "Old Furniture - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 167,
+      "name": "Broken Appliance - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 165,
+      "name": "Old Furniture - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 169,
+      "name": "Broken Appliance - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 168,
+      "name": "Broken Appliance - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 166,
+      "name": "Old Furniture - Dissolve",
+      "nerve_cost": 14
+    },
+    {
+      "id": 172,
+      "name": "Building Debris - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 171,
+      "name": "Building Debris - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 170,
+      "name": "Broken Appliance - Dissolve",
+      "nerve_cost": 14
+    },
+    {
+      "id": 173,
+      "name": "Building Debris - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 176,
+      "name": "Documents - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 174,
+      "name": "Documents - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 175,
+      "name": "Documents - Burn",
+      "nerve_cost": 10
+    },
+    {
+      "id": 177,
+      "name": "Documents - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 178,
+      "name": "Documents - Dissolve",
+      "nerve_cost": 14
+    },
+    {
+      "id": 180,
+      "name": "Vehicle - Burn",
+      "nerve_cost": 10
+    },
+    {
+      "id": 179,
+      "name": "Vehicle - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 181,
+      "name": "Vehicle - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 182,
+      "name": "Industrial Waste - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 183,
+      "name": "Industrial Waste - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 184,
+      "name": "Biological Waste - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 185,
+      "name": "Biological Waste - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 188,
+      "name": "Murder Weapon - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 187,
+      "name": "Murder Weapon - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 190,
+      "name": "Firearm - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 189,
+      "name": "Murder Weapon - Dissolve",
+      "nerve_cost": 14
+    },
+    {
+      "id": 186,
+      "name": "Murder Weapon - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 191,
+      "name": "Firearm - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 192,
+      "name": "Firearm - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 193,
+      "name": "Firearm - Dissolve",
+      "nerve_cost": 14
+    },
+    {
+      "id": 195,
+      "name": "Body Part - Burn",
+      "nerve_cost": 10
+    },
+    {
+      "id": 196,
+      "name": "Body Part - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 197,
+      "name": "Body Part - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 194,
+      "name": "Body Part - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 200,
+      "name": "Dead Body - Burn",
+      "nerve_cost": 10
+    },
+    {
+      "id": 198,
+      "name": "Body Part - Dissolve",
+      "nerve_cost": 14
+    },
+    {
+      "id": 199,
+      "name": "Dead Body - Abandon",
+      "nerve_cost": 6
+    },
+    {
+      "id": 201,
+      "name": "Dead Body - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 203,
+      "name": "Dead Body - Dissolve",
+      "nerve_cost": 14
+    },
+    {
+      "id": 202,
+      "name": "Dead Body - Sink",
+      "nerve_cost": 12
+    },
+    {
+      "id": 214,
+      "name": "Industrial Waste - Bury",
+      "nerve_cost": 8
+    },
+    {
+      "id": 215,
+      "name": "Biological Waste - Burn",
+      "nerve_cost": 10
+    },
+    {
+      "id": 216,
+      "name": "Biological Waste - Bury",
+      "nerve_cost": 8
+    }
+  ]
+}

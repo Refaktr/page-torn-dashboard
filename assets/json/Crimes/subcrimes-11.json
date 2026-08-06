@@ -1,0 +1,544 @@
+{
+  "subcrimes": [
+    {
+      "id": 207,
+      "name": "Begin Driver's License project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 208,
+      "name": "Step #1 : License drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 209,
+      "name": "Step #2 : License signing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 210,
+      "name": "Step #3 : License printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 211,
+      "name": "Step #4 : License lamination",
+      "nerve_cost": 5
+    },
+    {
+      "id": 212,
+      "name": "Begin Parking Permit project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 213,
+      "name": "Step #1 : Permit drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 219,
+      "name": "Step #2 : Permit printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 220,
+      "name": "Step #3 : Permit cutting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 221,
+      "name": "Step #4 : Permit lamination",
+      "nerve_cost": 5
+    },
+    {
+      "id": 223,
+      "name": "Step #1 : Ticket drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 233,
+      "name": "Step #6 : Plate drilling",
+      "nerve_cost": 5
+    },
+    {
+      "id": 244,
+      "name": "Step #4 : Diploma signing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 228,
+      "name": "Step #1 : Plate pressing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 226,
+      "name": "Step #4 : Ticket perforation",
+      "nerve_cost": 5
+    },
+    {
+      "id": 238,
+      "name": "Step #4 : Birth certificate sealing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 242,
+      "name": "Step #2 : Diploma printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 231,
+      "name": "Step #4 : Plate stencil cutting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 239,
+      "name": "Step #5 : Birth certificate signing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 243,
+      "name": "Step #3 : Diploma sealing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 241,
+      "name": "Step #1 : Diploma drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 235,
+      "name": "Step #1 : Birth certificate drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 229,
+      "name": "Step #2 : Plate background painting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 237,
+      "name": "Step #3 : Birth certificate typewriting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 230,
+      "name": "Step #3 : Plate rubbing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 236,
+      "name": "Step #2 : Birth certificate printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 232,
+      "name": "Step #5 : Plate letter painting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 222,
+      "name": "Begin Concert Ticket project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 227,
+      "name": "Begin License Plate project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 240,
+      "name": "Begin Diploma project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 234,
+      "name": "Begin Birth Certificate project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 224,
+      "name": "Step #2 : Ticket printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 225,
+      "name": "Step #3 : Ticket cutting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 246,
+      "name": "Step #1 : Key mold forming",
+      "nerve_cost": 5
+    },
+    {
+      "id": 245,
+      "name": "Begin Skeleton Key project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 247,
+      "name": "Step #2 : Key casting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 250,
+      "name": "Begin Prescription project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 248,
+      "name": "Step #3 : Key filing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 249,
+      "name": "Step #4 : Key polishing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 252,
+      "name": "Step #2 : Prescription printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 251,
+      "name": "Step #1 : Prescription drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 253,
+      "name": "Step #3 : Prescription typewriting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 254,
+      "name": "Step #4 : Prescription signing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 255,
+      "name": "Begin Travel Visa project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 256,
+      "name": "Step #1 : Travel Visa drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 257,
+      "name": "Step #2 : Travel Visa printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 258,
+      "name": "Step #3 : Travel Visa embossing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 259,
+      "name": "Step #4 : Travel Visa holography",
+      "nerve_cost": 5
+    },
+    {
+      "id": 260,
+      "name": "Begin Bank Check project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 261,
+      "name": "Step #1 : Bank Check drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 262,
+      "name": "Step #2 : Bank Check printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 263,
+      "name": "Step #3 : Check cutting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 264,
+      "name": "Step #4 : Check embossing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 265,
+      "name": "Step #5 : Check perforation",
+      "nerve_cost": 5
+    },
+    {
+      "id": 266,
+      "name": "Step #6 : Check signing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 267,
+      "name": "Begin Police Badge project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 270,
+      "name": "Step #3 : Badge filing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 268,
+      "name": "Step #1 : Badge mold forming",
+      "nerve_cost": 5
+    },
+    {
+      "id": 269,
+      "name": "Step #2 : Badge casting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 272,
+      "name": "Step #4 : Badge graving",
+      "nerve_cost": 5
+    },
+    {
+      "id": 273,
+      "name": "Step #5 : Badge firing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 274,
+      "name": "Step #6 : Badge enamel grinding",
+      "nerve_cost": 5
+    },
+    {
+      "id": 275,
+      "name": "Step #7 : Badge final polishing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 276,
+      "name": "Begin Passport project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 277,
+      "name": "Step #1 : Passport cover cutting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 278,
+      "name": "Step #2 : Passport latex wrapping",
+      "nerve_cost": 5
+    },
+    {
+      "id": 279,
+      "name": "Step #3 : Passport cover embossing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 280,
+      "name": "Step #4 : Passport logo stamping",
+      "nerve_cost": 5
+    },
+    {
+      "id": 281,
+      "name": "Step #5 : Passport photo page drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 282,
+      "name": "Step #6 : Passport page printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 283,
+      "name": "Step #7 : Passport page trimming",
+      "nerve_cost": 5
+    },
+    {
+      "id": 284,
+      "name": "Step #8 : Passport page stacking & folding",
+      "nerve_cost": 5
+    },
+    {
+      "id": 285,
+      "name": "Step #9 : Passport booklet sewing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 286,
+      "name": "Step #10 : Passport cover gluing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 287,
+      "name": "Step #11 : Passport lamination",
+      "nerve_cost": 5
+    },
+    {
+      "id": 288,
+      "name": "Step #12 : Passport quality check",
+      "nerve_cost": 5
+    },
+    {
+      "id": 289,
+      "name": "Step #5 : Visa lamination",
+      "nerve_cost": 5
+    },
+    {
+      "id": 314,
+      "name": "Begin ID Badge project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 315,
+      "name": "Step #1 : ID drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 316,
+      "name": "Step #2 : ID printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 317,
+      "name": "Step #3 : ID extracting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 318,
+      "name": "Step #4 : ID Embedding",
+      "nerve_cost": 5
+    },
+    {
+      "id": 319,
+      "name": "Step #5 : ID Programming",
+      "nerve_cost": 5
+    },
+    {
+      "id": 320,
+      "name": "Begin ATM Key project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 321,
+      "name": "Step #1 : Key mold forming",
+      "nerve_cost": 5
+    },
+    {
+      "id": 322,
+      "name": "Step #2 : Key casting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 323,
+      "name": "Step #3 : Key melding",
+      "nerve_cost": 5
+    },
+    {
+      "id": 324,
+      "name": "Step #4 : Key forging",
+      "nerve_cost": 5
+    },
+    {
+      "id": 325,
+      "name": "Step #5 : Key carving",
+      "nerve_cost": 5
+    },
+    {
+      "id": 326,
+      "name": "Step #6 : Key polishing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 338,
+      "name": "Begin Collection Bucket project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 339,
+      "name": "Step #1 : Lid drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 340,
+      "name": "Step #2 : Lid printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 341,
+      "name": "Step #3 : Lid lamination",
+      "nerve_cost": 5
+    },
+    {
+      "id": 342,
+      "name": "Step #4 : Lid assembly",
+      "nerve_cost": 5
+    },
+    {
+      "id": 343,
+      "name": "Begin Ordination Certificate project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 344,
+      "name": "Step #1 : Ordination certificate drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 345,
+      "name": "Step #2 : Ordination certificate printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 346,
+      "name": "Step #3 : Ordination certificate stamping",
+      "nerve_cost": 5
+    },
+    {
+      "id": 347,
+      "name": "Step #4 : Ordination certificate signing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 348,
+      "name": "Step #5 : Ordination certificate framing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 349,
+      "name": "Begin Medical License project",
+      "nerve_cost": 0
+    },
+    {
+      "id": 350,
+      "name": "Step #1 : License drafting",
+      "nerve_cost": 5
+    },
+    {
+      "id": 351,
+      "name": "Step #2 : License printing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 352,
+      "name": "Step #3 : License branding",
+      "nerve_cost": 5
+    },
+    {
+      "id": 353,
+      "name": "Step #4 : License gluing",
+      "nerve_cost": 5
+    },
+    {
+      "id": 354,
+      "name": "Step #5 : License lamination",
+      "nerve_cost": 5
+    },
+    {
+      "id": 395,
+      "name": "Step #5 : Lid Cutting",
+      "nerve_cost": 5
+    }
+  ]
+}
