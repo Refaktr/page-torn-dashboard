@@ -85,6 +85,34 @@ body{
     line-height:1.5;
 }
 
+.api-call-ticker{
+    width:100%;
+    margin-bottom:18px;
+    border:1px solid #3d4c67;
+    border-radius:10px;
+    padding:10px 12px;
+    background:#1c2332;
+    font-size:13px;
+}
+
+.api-call-ticker-title{
+    font-weight:700;
+    color:#d9e6ff;
+    margin-bottom:4px;
+}
+
+.api-call-ticker-count{
+    color:#7ed6df;
+    font-weight:700;
+    margin-bottom:3px;
+}
+
+.api-call-ticker-window,
+.api-call-ticker-reset{
+    color:#b8c6df;
+    font-size:12px;
+}
+
 @media (max-width: 900px){
     .container{
         flex-direction:column;

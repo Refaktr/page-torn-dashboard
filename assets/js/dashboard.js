@@ -19,6 +19,25 @@ if (!apiKey) {
     window.location.href = 'pages/settings.html'; // Redirect to settings page
 }
 
+const setText = (id, text) => {
+    const node = document.getElementById(id);
+    if (node) {
+        node.textContent = text;
+    }
+};
+
+const formatBar = (bar) => {
+    if (!bar) {
+        return '0 / 0';
+    }
+
+    const current = typeof bar.current === 'number' ? bar.current.toLocaleString() : '0';
+    const maximum = typeof bar.maximum === 'number'
+        ? bar.maximum.toLocaleString()
+        : (typeof bar.max === 'number' ? bar.max.toLocaleString() : '0');
+    return `${current} / ${maximum}`;
+};
+
 const fetchUserData = () => {
     const apiKey = getApiKey(); // Retrieve the API key from local storage
     
@@ -69,7 +88,30 @@ const getUserNetworth = () => {
         });
 }
 
+const fetchUserBars = () => {
+    const apiKey = getApiKey();
+
+    fetch(`https://api.torn.com/v2/user/bars?key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.error) {
+                console.error('Error fetching user bars:', data.error);
+                return;
+            }
+
+            const bars = data && data.bars ? data.bars : {};
+            setText('user-energy', formatBar(bars.energy));
+            setText('user-nerve', formatBar(bars.nerve));
+            setText('user-happy', formatBar(bars.happy));
+            setText('user-life', formatBar(bars.life));
+        })
+        .catch(error => {
+            console.error('Error fetching user bars:', error);
+        });
+}
+
 
 // Call the fetchUserData function to initiate the API call
 fetchUserData();
 getUserNetworth();
+fetchUserBars();
