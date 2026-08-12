@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company | Torn Dashboard</title>
+    <title>Financials | Torn Dashboard</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/company.css">
+    <link rel="stylesheet" href="../assets/css/financials.css">
 </head>
-<body class="page-company">
+<body class="page-financials">
     <div class="container">
         <aside class="sidebar">
             <h2>Torn Tools</h2>
@@ -24,15 +24,29 @@
 
         <main class="content">
             <div class="header">
-                <h1>Company</h1>
-                <span>Coming Soon</span>
+                <h1>Financials</h1>
+                <span id="financials-status">Loading...</span>
             </div>
             <section class="page-placeholder">
-                <p>This page is ready for staffing, earnings, and productivity views.</p>
+                <p>Logs are flattened into a paginated table so you can scan recent financial activity quickly.</p>
             </section>
+
+            <section class="financials-networth card">
+                <h2>Networth Snapshot</h2>
+                <div class="cards" id="financials-networth-cards"></div>
+            </section>
+
+            <section class="financials-summary cards" id="financials-summary"></section>
+
+            <section class="card financials-table-card">
+                <div class="financials-table-wrap" id="financials-table-wrap"></div>
+            </section>
+
+            <div class="financials-pagination" id="financials-pagination"></div>
         </main>
     </div>
 
     <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/financials.js"></script>
 </body>
 </html>
