@@ -1,6 +1,6 @@
-// Crimes page: fetch crime IDs 1-9 sequentially and render summary + details.
+// Crimes page: fetch crime IDs 1-6 sequentially and render summary + details.
 (function(){
-	var MAX_CRIME_ID = 2;
+	var MAX_CRIME_ID = 6;
 	var MIN_CRIME_ID = 1;
 	var TOTAL_CRIME_COUNT = (MAX_CRIME_ID - MIN_CRIME_ID) + 1;
 	var CRIMES_JSON_BASES = [
