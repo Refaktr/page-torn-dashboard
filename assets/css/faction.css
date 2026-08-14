@@ -1,45 +1,46 @@
 .page-faction .faction-hero {
     display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(240px, 0.8fr);
+    grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.8fr);
     gap: 16px;
+    padding: 18px;
     margin-bottom: 16px;
-    border: 1px solid #3a4b62;
-    background: linear-gradient(180deg, #232c3d 0%, #1e2532 100%);
 }
 
 .page-faction .faction-eyebrow {
     margin: 0 0 10px;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: #8fc7ff;
+    letter-spacing: 0.18em;
+    color: var(--accent-strong);
     font-size: 0.76rem;
     font-weight: 700;
 }
 
 .page-faction .faction-hero h2 {
     margin: 0 0 12px;
-    font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
     line-height: 1.05;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
 }
 
 .page-faction .faction-lede {
     margin: 0;
-    color: #aeb9cf;
-    line-height: 1.6;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 58ch;
 }
 
 .page-faction .faction-hero-card {
-    border: 1px solid #425578;
-    border-radius: 14px;
-    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 16px;
     background: rgba(255, 255, 255, 0.03);
+    align-self: end;
 }
 
 .page-faction .faction-hero-card-label {
-    color: #aab8d4;
-    font-size: 0.85rem;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    color: var(--muted);
+    font-size: 0.9rem;
 }
 
 .page-faction .faction-hero-card ul {
@@ -48,50 +49,57 @@
     margin: 0;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    gap: 10px;
 }
 
 .page-faction .faction-hero-card li {
-    border: 1px solid #3e4c66;
-    border-radius: 10px;
-    padding: 8px 10px;
-    background: rgba(255, 255, 255, 0.02);
-    color: #dfe8fb;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text);
     font-size: 0.9rem;
 }
 
 .page-faction .faction-controls,
 .page-faction .faction-status-strip,
 .page-faction .faction-table-panel {
-    margin-bottom: 14px;
-    border: 1px solid #37465d;
+    padding: 18px;
 }
 
 .page-faction .faction-form-grid {
     display: grid;
-    grid-template-columns: 1.1fr 1fr auto;
-    gap: 12px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
+    gap: 14px;
     align-items: end;
 }
 
 .page-faction .faction-form-grid label {
     display: grid;
-    gap: 7px;
+    gap: 8px;
 }
 
 .page-faction .faction-form-grid label span,
 .page-faction .faction-label {
-    color: #a8b6d3;
-    font-size: 0.82rem;
+    color: var(--muted);
+    font-size: 0.84rem;
+    letter-spacing: 0.03em;
 }
 
 .page-faction .faction-form-grid input {
     width: 100%;
-    padding: 11px 12px;
-    border-radius: 10px;
-    border: 1px solid #3f516e;
-    background: #1a2130;
-    color: #ecf3ff;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(7, 10, 14, 0.65);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.page-faction .faction-form-grid input:focus {
+    border-color: rgba(90, 200, 250, 0.7);
+    box-shadow: 0 0 0 4px rgba(90, 200, 250, 0.12);
 }
 
 .page-faction .faction-button-row {
@@ -101,88 +109,92 @@
     gap: 10px;
 }
 
-.page-faction .faction-button-row .primary,
-.page-faction .faction-button-row .secondary {
-    border-radius: 10px;
-    padding: 11px 14px;
-}
-
 .page-faction .faction-toggle-row {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid #3f516e;
-    background: rgba(255, 255, 255, 0.03);
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
     cursor: pointer;
+    user-select: none;
 }
 
 .page-faction .faction-toggle-row input {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     margin: 0;
+    accent-color: var(--accent-strong);
 }
 
 .page-faction .faction-note {
-    margin: 12px 0 0;
-    color: #a8b6d3;
-    font-size: 0.9rem;
+    margin: 14px 0 0;
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 .page-faction .faction-status-strip {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    gap: 12px;
 }
 
 .page-faction .faction-status-strip > div {
-    border: 1px solid #3d4d66;
-    border-radius: 10px;
-    padding: 10px;
-    background: #1f2736;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .page-faction .faction-status-strip strong {
     display: block;
-    margin-top: 5px;
+    margin-top: 6px;
+    font-size: 1.06rem;
+    overflow-wrap: anywhere;
 }
 
 .page-faction .faction-table-toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 14px;
+    margin-bottom: 12px;
 }
 
 .page-faction .faction-table-toolbar h2 {
     margin: 0;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
 }
 
 .page-faction .faction-message {
-    color: #aab8d4;
+    color: var(--muted);
     font-size: 0.9rem;
 }
 
 .page-faction .faction-table-wrap {
     overflow: auto;
-    border: 1px solid #3a4b62;
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
 }
 
 .page-faction table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 760px;
+    min-width: 860px;
 }
 
 .page-faction thead th {
     text-align: left;
-    background: #1f2736;
-    color: #d8e6ff;
-    padding: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #dfe9f1;
+    font-size: 0.88rem;
+    padding: 14px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .page-faction .sort-button {
@@ -190,36 +202,44 @@
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
     padding: 0;
     border: 0;
     background: transparent;
     color: inherit;
     font: inherit;
+    font-weight: inherit;
     cursor: pointer;
 }
 
 .page-faction .sort-button::after {
     content: "\2195";
-    color: rgba(216, 230, 255, 0.5);
+    font-size: 0.82rem;
+    color: rgba(223, 233, 241, 0.45);
 }
 
 .page-faction .sort-button[data-direction="asc"]::after {
     content: "\2191";
-    color: #8fc7ff;
+    color: var(--accent-strong);
 }
 
 .page-faction .sort-button[data-direction="desc"]::after {
     content: "\2193";
-    color: #8fc7ff;
+    color: var(--accent-strong);
 }
 
-.page-faction tbody td {
-    padding: 12px;
-    border-top: 1px solid #33435a;
+.page-faction tbody tr {
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .page-faction tbody tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.page-faction tbody td {
+    padding: 14px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: top;
 }
 
 .page-faction .status-badge,
@@ -228,39 +248,82 @@
     align-items: center;
     gap: 8px;
     border-radius: 999px;
-    padding: 6px 10px;
-    font-size: 0.84rem;
+    padding: 7px 10px;
+    font-size: 0.86rem;
     font-weight: 700;
 }
 
 .page-faction .status-badge::before,
 .page-faction .revive-badge::before {
     content: "";
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     background: currentColor;
 }
 
-.page-faction .status-green { color: #5adf86; }
-.page-faction .status-red { color: #ff8787; }
-.page-faction .status-blue { color: #7db8ff; }
-.page-faction .status-orange { color: #f4b36a; }
-.page-faction .status-yellow { color: #f4d47a; }
-.page-faction .status-default { color: #b7c6e3; }
+.page-faction .status-green { color: var(--good); }
+.page-faction .status-red { color: var(--bad); }
+.page-faction .status-blue { color: var(--blue); }
+.page-faction .status-orange { color: var(--warn); }
+.page-faction .status-yellow { color: var(--yellow); }
+.page-faction .status-default { color: var(--text); }
 
-.page-faction .revive-yes { color: #61d8a0; }
+.page-faction .fair-fight-score {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 6px 10px;
+    background: rgba(90, 200, 250, 0.12);
+    color: var(--accent-strong);
+    font-weight: 700;
+    font-size: 0.84rem;
+}
+
+.page-faction .member-profile-link,
+.page-faction .attack-action {
+    color: var(--accent-strong);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.page-faction .member-profile-link:hover,
+.page-faction .attack-action:hover {
+    text-decoration: underline;
+}
+
+.page-faction .attack-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 84px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(231, 76, 60, 0.14);
+    border: 1px solid rgba(231, 76, 60, 0.28);
+    color: #ffd7d2;
+}
+
+.page-faction .revive-yes { color: var(--good); }
 
 @media (max-width: 920px) {
-    .page-faction .faction-hero {
-        grid-template-columns: 1fr;
-    }
-
-    .page-faction .faction-form-grid {
-        grid-template-columns: 1fr;
-    }
-
+    .page-faction .faction-hero,
+    .page-faction .faction-form-grid,
     .page-faction .faction-status-strip {
         grid-template-columns: 1fr;
+    }
+
+    .page-faction .faction-table-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-faction .faction-controls,
+    .page-faction .faction-status-strip,
+    .page-faction .faction-table-panel,
+    .page-faction .faction-hero {
+        border-radius: 18px;
     }
 }

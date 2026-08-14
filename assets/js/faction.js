@@ -59,6 +59,8 @@ let currentMembers = [];
 let currentLiveRequest = null;
 let autoRefreshTimerId = null;
 let isRefreshing = false;
+let fairFightMap = {};
+let fairFightLoadedForFaction = null;
 let sortState = {
   key: null,
   direction: "asc"
@@ -70,7 +72,8 @@ const SORT_LABELS = {
   position: "Position",
   status: "Status",
   revive: "Revive",
-  lastAction: "Last Action"
+  lastAction: "Last Action",
+  fairFight: "Fair Fight"
 };
 
 function getSavedApiKey() {
@@ -80,6 +83,16 @@ function getSavedApiKey() {
   }
 
   const storedApiKey = localStorage.getItem("tornApiKey");
+  return storedApiKey || "";
+}
+
+function getSavedFFScouterApiKey() {
+  const sessionApiKey = sessionStorage.getItem("ffscouterApiKey");
+  if (sessionApiKey) {
+    return sessionApiKey;
+  }
+
+  const storedApiKey = localStorage.getItem("ffscouterApiKey");
   return storedApiKey || "";
 }
 
@@ -175,6 +188,10 @@ function getSortValue(member, key) {
       const minutes = parseRelativeTimeToMinutes(relative);
       return Number.isNaN(minutes) ? relative.toLowerCase() : minutes;
     }
+    case "fairFight": {
+      const entry = fairFightMap[member?.id];
+      return typeof entry?.fairFight === "number" ? entry.fairFight : -1;
+    }
     default:
       return "";
   }
@@ -221,11 +238,23 @@ function updateSortIndicators() {
   });
 }
 
+function formatFairFight(member) {
+  const entry = fairFightMap[member?.id];
+
+  if (!entry || (entry.fairFight == null && !entry.bsEstimateHuman)) {
+    return "";
+  }
+
+  const fairFightText = typeof entry.fairFight === "number" ? entry.fairFight.toFixed(2) : "?";
+  const bsText = entry.bsEstimateHuman || "?";
+  return `${fairFightText} (${bsText})`;
+}
+
 function renderMembers() {
   const members = getSortedMembers();
 
   if (!members.length) {
-    memberBody.innerHTML = '<tr class="empty-row"><td colspan="6">No members found.</td></tr>';
+    memberBody.innerHTML = '<tr class="empty-row"><td colspan="8">No members found.</td></tr>';
     return;
   }
 
@@ -233,15 +262,27 @@ function renderMembers() {
     .map((member) => {
       const status = member.status || {};
       const revive = member.is_revivable ? '<span class="revive-badge revive-yes">Yes</span>' : "";
+      const memberId = member?.id ?? "";
+      const memberName = escapeHtml(member.name ?? "");
+      const profileLink = memberId ? `https://www.torn.com/profiles.php?XID=${encodeURIComponent(memberId)}` : "#";
+      const attackLink = memberId ? `https://www.torn.com/page.php?sid=attack&user2ID=${encodeURIComponent(memberId)}` : "#";
+      const nameCell = memberId
+        ? `<a href="${profileLink}" target="_blank" rel="noopener noreferrer" class="member-profile-link">${memberName}</a>`
+        : memberName;
+      const attackCell = memberId
+        ? `<a href="${attackLink}" target="_blank" rel="noopener noreferrer" class="attack-action">ATTACK</a>`
+        : "";
 
       return `
         <tr>
-          <td>${escapeHtml(member.name ?? "")}</td>
+          <td>${nameCell}</td>
           <td>${escapeHtml(member.level ?? "")}</td>
           <td>${escapeHtml(member.position ?? "")}</td>
           <td><span class="status-badge ${statusClass(status.color)}">${escapeHtml(status.description ?? "")}</span></td>
           <td>${revive}</td>
           <td>${escapeHtml(member.last_action?.relative ?? "")}</td>
+          <td><span class="fair-fight-score">${escapeHtml(formatFairFight(member))}</span></td>
+          <td>${attackCell}</td>
         </tr>
       `;
     })
@@ -284,10 +325,65 @@ async function loadFactionFromApi(factionName, apiKey) {
   }
 
   const membersData = await membersResponse.json();
+
+  console.log("Loaded faction data", { factionName, factionId, membersData });
+
   return {
     factionName,
     members: Object.values(membersData?.members || {})
   };
+}
+
+async function getFairFightData(userIdArray, apiKey) {
+  if (!Array.isArray(userIdArray) || !userIdArray.length) {
+    return {};
+  }
+
+  const targets = userIdArray.join(",");
+  const response = await fetch(`https://ffscouter.com/api/v1/get-stats?key=${encodeURIComponent(apiKey)}&targets=${encodeURIComponent(targets)}`);
+
+  if (!response.ok) {
+    throw new Error(`Fair fight lookup failed (${response.status})`);
+  }
+
+  const data = await response.json();
+  const fairFightById = {};
+
+  (Array.isArray(data) ? data : []).forEach((entry) => {
+    if (entry?.player_id == null) {
+      return;
+    }
+
+    fairFightById[entry.player_id] = {
+      fairFight: typeof entry.fair_fight === "number" ? entry.fair_fight : null,
+      bsEstimateHuman: entry.bs_estimate_human ?? null
+    };
+  });
+
+  return fairFightById;
+}
+
+async function loadFairFightForFaction(factionName, members, apiKey) {
+  if (fairFightLoadedForFaction === factionName) {
+    return;
+  }
+
+  const ids = members.map((member) => member?.id).filter((id) => id !== undefined && id !== null);
+
+  if (!ids.length) {
+    return;
+  }
+
+  fairFightLoadedForFaction = factionName;
+
+  try {
+    fairFightMap = await getFairFightData(ids, apiKey);
+    renderMembers();
+  } catch (error) {
+    console.error("Fair fight lookup failed", error);
+    fairFightLoadedForFaction = null;
+    setMessage(error instanceof Error ? error.message : "Fair Fight data unavailable.");
+  }
 }
 
 async function refreshLiveRoster(silent = false, clearOnError = false) {
@@ -337,6 +433,7 @@ form.addEventListener("submit", async (event) => {
 
   const factionName = factionNameInput.value.trim();
   const apiKey = getSavedApiKey();
+  const ffscouterApiKey = getSavedFFScouterApiKey();
 
   if (!factionName) {
     setMessage("Enter a faction name first.");
@@ -355,6 +452,10 @@ form.addEventListener("submit", async (event) => {
 
   if (!loaded) {
     return;
+  }
+
+  if (ffscouterApiKey) {
+    await loadFairFightForFaction(factionName, currentMembers, ffscouterApiKey);
   }
 
   syncAutoRefreshState();

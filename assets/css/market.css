@@ -5,7 +5,7 @@
 
 .page-market .cards {
     margin-top: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .page-market .market-controls {

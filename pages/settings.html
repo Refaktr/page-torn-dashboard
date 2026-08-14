@@ -54,6 +54,26 @@
                     <p class="settings-note" id="api-key-storage-note">Session mode is safer on shared devices.</p>
                 </div>
 
+                <div class="card api-key-card">
+                    <h3>FFScouter API Key</h3>
+                    <p>Enter your FFScouter API key to enable Fair Fight scoring.</p>
+
+                    <label for="ffscouter-api-key-input" class="settings-label">FFScouter API Key</label>
+                    <input id="ffscouter-api-key-input" type="text" placeholder="Enter your FFScouter API key" autocomplete="off">
+
+                    <label for="ffscouter-api-key-storage-mode" class="settings-label">Storage</label>
+                    <select id="ffscouter-api-key-storage-mode">
+                        <option value="session">Session only (clears when browser closes)</option>
+                        <option value="remember">Remember on this device</option>
+                    </select>
+
+                    <div class="settings-actions">
+                        <button id="ffscouter-api-key-save-button" type="button">Save</button>
+                        <button id="ffscouter-api-key-clear-button" type="button" class="button-secondary">Clear</button>
+                    </div>
+                    <p class="settings-note" id="ffscouter-api-key-storage-note">Session mode is safer on shared devices.</p>
+                </div>
+
                 <div class="card">
                     <h3>Theme</h3>
                     <p>Choose your preferred theme for the dashboard.</p>
