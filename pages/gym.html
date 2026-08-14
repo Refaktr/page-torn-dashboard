@@ -25,14 +25,68 @@
         <main class="content">
             <div class="header">
                 <h1>Gym</h1>
-                <span>Coming Soon</span>
+                <span>Battle Stat History</span>
             </div>
-            <section class="page-placeholder">
-                <p>This page is ready for stat training plans and progress tracking.</p>
+
+            <section class="gym-layout">
+                <article class="card gym-summary" id="gym-summary-card">
+                    <h3>Gym Log Overview</h3>
+                    <p id="gym-status-text" class="gym-status-text">Loading gym stat logs...</p>
+                    <div class="gym-stats-row">
+                        <div class="gym-stat-pill">
+                            <span>Total Entries</span>
+                            <strong id="gym-total-entries">0</strong>
+                        </div>
+                        <div class="gym-stat-pill">
+                            <span>Visible Points</span>
+                            <strong id="gym-visible-points">0</strong>
+                        </div>
+                        <div class="gym-stat-pill">
+                            <span>Range</span>
+                            <strong id="gym-range-label">365 days</strong>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card gym-controls">
+                    <h3>Chart Controls</h3>
+                    <div class="gym-slider-wrap">
+                        <label for="gym-range-slider">Display recent history</label>
+                        <input id="gym-range-slider" type="range" min="30" max="3650" step="30" value="365">
+                        <div class="gym-slider-labels">
+                            <span>30d</span>
+                            <span>5y+</span>
+                        </div>
+                    </div>
+
+                    <div id="gym-series-toggles" class="gym-series-toggles"></div>
+
+                    <div class="gym-control-actions">
+                        <button id="gym-reset-zoom" type="button" class="secondary">Reset Zoom</button>
+                        <button id="gym-show-all-range" type="button" class="secondary">Show Full Range</button>
+                    </div>
+                </article>
+
+                <article class="card gym-chart-panel">
+                    <h3>After Value Over Time</h3>
+                    <div class="gym-chart-wrap">
+                        <canvas id="gym-stat-chart" aria-label="Gym stat history chart"></canvas>
+                    </div>
+                </article>
+
+                <article class="card gym-help">
+                    <h3>Tips</h3>
+                    <p>Mouse wheel to zoom, drag to pan horizontally, and toggle stat lines to focus a specific training path.</p>
+                    <p>If your API key is missing, set it on the Settings page first.</p>
+                </article>
             </section>
         </main>
     </div>
 
     <script src="../assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="../assets/js/gym.js"></script>
 </body>
 </html>
