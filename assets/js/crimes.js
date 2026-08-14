@@ -94,6 +94,7 @@
 
 	async function fetchJson(url) {
 		try {
+			console.log('API endpoint:', url);
 			var response = await fetch(url);
 			if (!response.ok) {
 				return null;
@@ -168,6 +169,7 @@
 	}
 
 	async function requestCrimeData(url) {
+		console.log('API endpoint:', url);
 		var response = await fetch(url);
 		var data = await response.json();
 

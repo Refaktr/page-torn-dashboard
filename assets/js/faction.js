@@ -295,7 +295,9 @@ function setMembers(members) {
 }
 
 async function loadFactionFromApi(factionName, apiKey) {
-  const searchResponse = await fetch(`https://api.torn.com/v2/faction/search?name=${encodeURIComponent(factionName)}`, {
+  const searchUrl = `https://api.torn.com/v2/faction/search?name=${encodeURIComponent(factionName)}`;
+  console.log("API endpoint:", searchUrl);
+  const searchResponse = await fetch(searchUrl, {
     headers: {
       Accept: "application/json",
       Authorization: `ApiKey ${apiKey}`
@@ -313,7 +315,9 @@ async function loadFactionFromApi(factionName, apiKey) {
     throw new Error("No faction match found.");
   }
 
-  const membersResponse = await fetch(`https://api.torn.com/v2/faction/${factionId}/members`, {
+  const membersUrl = `https://api.torn.com/v2/faction/${factionId}/members`;
+  console.log("API endpoint:", membersUrl);
+  const membersResponse = await fetch(membersUrl, {
     headers: {
       Accept: "application/json",
       Authorization: `ApiKey ${apiKey}`
@@ -340,7 +344,9 @@ async function getFairFightData(userIdArray, apiKey) {
   }
 
   const targets = userIdArray.join(",");
-  const response = await fetch(`https://ffscouter.com/api/v1/get-stats?key=${encodeURIComponent(apiKey)}&targets=${encodeURIComponent(targets)}`);
+  const ffScouterUrl = `https://ffscouter.com/api/v1/get-stats?key=${encodeURIComponent(apiKey)}&targets=${encodeURIComponent(targets)}`;
+  console.log("API endpoint:", ffScouterUrl);
+  const response = await fetch(ffScouterUrl);
 
   if (!response.ok) {
     throw new Error(`Fair fight lookup failed (${response.status})`);

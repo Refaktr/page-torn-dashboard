@@ -1,0 +1,24 @@
+Gym name 	Cost to unlock 	Energy per train 	Strength gains 	Speed gains 	Defense gains 	Dex. gains
+Balboas Gym 	$50,000,000 	25 	- 	- 	7.5 	7.5
+Requirements: Cha Cha's Unlocked; Defense + Dexterity 25% higher than Strength + Speed.
+
+Frontline Fitness 	$50,000,000 	25 	7.5 	7.5 	- 	-
+Requirements: Cha Cha's Unlocked; Strength + Speed 25% higher than Dexterity + Defense
+
+Gym 3000 	$100,000,000 	50 	8.0 	- 	- 	-
+Requirements: George's unlocked; Strength 25% higher than your second highest stat
+
+Mr. Isoyamas 	$100,000,000 	50 	- 	- 	8.0 	-
+Requirements: George's unlocked; Defense 25% higher than your second highest stat
+
+Total Rebound 	$100,000,000 	50 	- 	8.0 	- 	-
+Requirements: George's unlocked; Speed 25% higher than your second highest stat
+
+Elites 	$100,000,000 	50 	- 	- 	- 	8.0
+Requirements: George's unlocked; Dexterity 25% higher than your second highest stat
+
+The Sports Science Lab 	$500,000,000 	25 	9.0 	9.0 	9.0 	9.0
+Requirements: Last Round unlocked; Maximum 150 Xanax and Ecstasy combined taken in total.[1]
+
+Fight Club 	$2,147,483,647 	10 	10.0 	10.0 	10.0 	10.0
+Requirements: Well, unknown... "Membership by invite only" 

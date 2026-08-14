@@ -306,6 +306,7 @@
 
     async function fetchJson(url) {
         try {
+            console.log('API endpoint:', url);
             var response = await fetch(url);
             var data = await response.json();
 

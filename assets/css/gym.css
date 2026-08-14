@@ -119,6 +119,103 @@
     margin-top: 8px;
 }
 
+.page-gym .gym-specialty {
+    display: grid;
+    gap: 12px;
+}
+
+.page-gym .gym-specialty-accordion {
+    padding: 0;
+}
+
+.page-gym .gym-specialty-accordion > summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0;
+    padding: 20px 20px 18px;
+    color: var(--muted);
+}
+
+.page-gym .gym-specialty-accordion > summary::-webkit-details-marker {
+    display: none;
+}
+
+.page-gym .gym-specialty-body {
+    padding: 0 20px 18px;
+}
+
+.page-gym .gym-specialty-summary {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.page-gym .gym-specialty-summary strong {
+    display: inline-block;
+    color: var(--accent-strong);
+    margin-bottom: 6px;
+}
+
+.page-gym .gym-specialty-list {
+    display: grid;
+    gap: 10px;
+}
+
+.page-gym .gym-specialty-item {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.page-gym .gym-specialty-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.page-gym .gym-specialty-title {
+    font-size: 0.96rem;
+    font-weight: 700;
+}
+
+.page-gym .gym-specialty-content {
+    margin-top: 6px;
+}
+
+.page-gym .gym-specialty-content p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+}
+
+.page-gym .gym-specialty-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.page-gym .gym-specialty-badge.is-ready {
+    color: #07210f;
+    background: #59d489;
+}
+
+.page-gym .gym-specialty-badge.is-progress {
+    color: #1e1805;
+    background: #f4d03f;
+}
+
 @media (max-width: 760px) {
     .page-gym .gym-stats-row {
         grid-template-columns: 1fr;

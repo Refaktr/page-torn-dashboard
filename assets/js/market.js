@@ -296,6 +296,7 @@ function fetchMarketData() {
 
     // Example API endpoint for market data (replace with actual endpoint)
     var apiUrl = `https://api.torn.com/v2/torn/items?cat=All&key=${encodeURIComponent(apiKey)}`;
+    console.log('API endpoint:', apiUrl);
 
     fetch(apiUrl)
         .then(response => response.json())

@@ -40,8 +40,10 @@ const formatBar = (bar) => {
 
 const fetchUserData = () => {
     const apiKey = getApiKey(); // Retrieve the API key from local storage
+    const basicUrl = `https://api.torn.com/user/?selections=basic&key=${apiKey}`;
+    console.log('API endpoint:', basicUrl);
     
-    fetch(`https://api.torn.com/user/?selections=basic&key=${apiKey}`)
+    fetch(basicUrl)
         .then(response => response.json())
         .then(data => {
             // Handle the user data here
@@ -58,7 +60,10 @@ const fetchUserData = () => {
             console.error('Error fetching user data:', error);
         });
 
-    fetch(`https://api.torn.com/v2/user/faction?key=${apiKey}`)
+    const factionUrl = `https://api.torn.com/v2/user/faction?key=${apiKey}`;
+    console.log('API endpoint:', factionUrl);
+
+    fetch(factionUrl)
         .then(response => response.json())
         .then(data => {
             console.log(data);
@@ -73,7 +78,10 @@ const fetchUserData = () => {
 
 const getUserNetworth = () => {
     const apiKey = getApiKey(); // Retrieve the API key from local storage
-    fetch(`https://api.torn.com/v2/user/money?key=${apiKey}`)
+    const moneyUrl = `https://api.torn.com/v2/user/money?key=${apiKey}`;
+    console.log('API endpoint:', moneyUrl);
+
+    fetch(moneyUrl)
         .then(response => response.json())
         .then(data => {
             // Handle the user networth data here
@@ -90,8 +98,10 @@ const getUserNetworth = () => {
 
 const fetchUserBars = () => {
     const apiKey = getApiKey();
+    const barsUrl = `https://api.torn.com/v2/user/bars?key=${apiKey}`;
+    console.log('API endpoint:', barsUrl);
 
-    fetch(`https://api.torn.com/v2/user/bars?key=${apiKey}`)
+    fetch(barsUrl)
         .then(response => response.json())
         .then(data => {
             if (data && data.error) {

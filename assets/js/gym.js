@@ -1,6 +1,33 @@
 (function(){
     var STORAGE_KEY = 'tornApiKey';
     var LOG_IDS = [5300, 5301, 5302, 5303];
+    var GYM_LOG_LIMIT = 100;
+    var SPECIALTY_GYMS = [
+        {
+            name: 'Balboas Gym',
+            requirementText: "Cha Cha's Unlocked; Defense + Dexterity 25% higher than Strength + Speed."
+        },
+        {
+            name: 'Frontline Fitness',
+            requirementText: "Cha Cha's Unlocked; Strength + Speed 25% higher than Dexterity + Defense."
+        },
+        {
+            name: 'Gym 3000',
+            requirementText: "George's unlocked; Strength 25% higher than your second highest stat."
+        },
+        {
+            name: 'Mr. Isoyamas',
+            requirementText: "George's unlocked; Defense 25% higher than your second highest stat."
+        },
+        {
+            name: 'Total Rebound',
+            requirementText: "George's unlocked; Speed 25% higher than your second highest stat."
+        },
+        {
+            name: 'Elites',
+            requirementText: "George's unlocked; Dexterity 25% higher than your second highest stat."
+        }
+    ];
 
     var STAT_META = {
         5300: { label: 'Strength', afterKey: 'strength_after', color: '#ff6b6b' },
@@ -14,7 +41,8 @@
         rawEntries: [],
         datasets: [],
         earliestTimestampMs: null,
-        latestTimestampMs: null
+        latestTimestampMs: null,
+        latestStats: null
     };
 
     function getApiKey() {
@@ -47,6 +75,16 @@
         if (node) {
             node.textContent = String(value);
         }
+    }
+
+    function setSpecialtyStatus(message, isError) {
+        var node = document.getElementById('gym-specialty-status');
+        if (!node) {
+            return;
+        }
+
+        node.textContent = message;
+        node.style.color = isError ? 'var(--bad)' : 'var(--muted)';
     }
 
     function formatDate(value) {
@@ -142,6 +180,294 @@
             return null;
         }
         return points[points.length - 1];
+    }
+
+    function getStatsFromLatestDatasets() {
+        var stats = {
+            strength: 0,
+            defense: 0,
+            speed: 0,
+            dexterity: 0
+        };
+
+        state.datasets.forEach(function(ds){
+            var latest = getLatestPoint(ds.points);
+            if (!latest || !Number.isFinite(latest.y)) {
+                return;
+            }
+
+            if (ds.label === 'Strength') {
+                stats.strength = latest.y;
+            }
+
+            if (ds.label === 'Defense') {
+                stats.defense = latest.y;
+            }
+
+            if (ds.label === 'Speed') {
+                stats.speed = latest.y;
+            }
+
+            if (ds.label === 'Dexterity') {
+                stats.dexterity = latest.y;
+            }
+        });
+
+        return stats;
+    }
+
+    function extractBattleStats(payload) {
+        if (!payload || typeof payload !== 'object') {
+            return null;
+        }
+
+        var candidates = [
+            payload.battlestats,
+            payload.battle_stats,
+            payload.stats,
+            payload.userstats
+        ];
+
+        for (var i = 0; i < candidates.length; i += 1) {
+            var candidate = candidates[i];
+            if (!candidate || typeof candidate !== 'object') {
+                continue;
+            }
+
+            var strength = Number(candidate.strength);
+            var defense = Number(candidate.defense);
+            var speed = Number(candidate.speed);
+            var dexterity = Number(candidate.dexterity);
+
+            if ([strength, defense, speed, dexterity].every(Number.isFinite)) {
+                return {
+                    strength: strength,
+                    defense: defense,
+                    speed: speed,
+                    dexterity: dexterity
+                };
+            }
+        }
+
+        return null;
+    }
+
+    function fetchLiveBattleStats(apiKey) {
+        var urls = [
+            'https://api.torn.com/v2/user/battlestats?key=' + encodeURIComponent(apiKey),
+            'https://api.torn.com/user/?selections=battlestats&key=' + encodeURIComponent(apiKey)
+        ];
+
+        return urls.reduce(function(chain, url){
+            return chain.then(function(found){
+                if (found) {
+                    return found;
+                }
+
+                console.log('API endpoint:', url);
+                return fetch(url)
+                    .then(function(response){
+                        if (!response.ok) {
+                            return null;
+                        }
+                        return response.json();
+                    })
+                    .then(function(payload){
+                        if (!payload || payload.error) {
+                            return null;
+                        }
+
+                        return extractBattleStats(payload);
+                    })
+                    .catch(function(){
+                        return null;
+                    });
+            });
+        }, Promise.resolve(null));
+    }
+
+    function ratioCheckTwoSide(stats, leftA, leftB, rightA, rightB, factor) {
+        var left = stats[leftA] + stats[leftB];
+        var right = factor * (stats[rightA] + stats[rightB]);
+        var ratio = right > 0 ? left / right : (left > 0 ? 1 : 0);
+        return {
+            pass: left >= right,
+            progress: ratio,
+            details: Math.round(left).toLocaleString() + ' / ' + Math.round(right).toLocaleString()
+        };
+    }
+
+    function ratioCheckSingleVsSecondHighest(stats, key, factor) {
+        var all = ['strength', 'defense', 'speed', 'dexterity'];
+        var others = all.filter(function(name){
+            return name !== key;
+        }).map(function(name){
+            return stats[name];
+        });
+
+        var secondHighestProxy = Math.max.apply(null, others);
+        var needed = factor * secondHighestProxy;
+        var have = stats[key];
+        var ratio = needed > 0 ? have / needed : (have > 0 ? 1 : 0);
+
+        return {
+            pass: have >= needed,
+            progress: ratio,
+            details: Math.round(have).toLocaleString() + ' / ' + Math.round(needed).toLocaleString()
+        };
+    }
+
+    function evaluateSpecialtyGym(gym, stats) {
+        var text = gym.requirementText.toLowerCase();
+
+        if (text.indexOf('defense + dexterity 25% higher than strength + speed') !== -1) {
+            var balboas = ratioCheckTwoSide(stats, 'defense', 'dexterity', 'strength', 'speed', 1.25);
+            return {
+                gymName: gym.name,
+                requirementText: gym.requirementText,
+                pass: balboas.pass,
+                progress: balboas.progress,
+                hint: 'Need (Defense + Dexterity) >= 1.25 x (Strength + Speed). Currently: ' + balboas.details
+            };
+        }
+
+        if (text.indexOf('strength + speed 25% higher than dexterity + defense') !== -1) {
+            var frontline = ratioCheckTwoSide(stats, 'strength', 'speed', 'dexterity', 'defense', 1.25);
+            return {
+                gymName: gym.name,
+                requirementText: gym.requirementText,
+                pass: frontline.pass,
+                progress: frontline.progress,
+                hint: 'Need (Strength + Speed) >= 1.25 x (Dexterity + Defense). Currently: ' + frontline.details
+            };
+        }
+
+        if (text.indexOf('strength 25% higher than your second highest stat') !== -1) {
+            var strCheck = ratioCheckSingleVsSecondHighest(stats, 'strength', 1.25);
+            return {
+                gymName: gym.name,
+                requirementText: gym.requirementText,
+                pass: strCheck.pass,
+                progress: strCheck.progress,
+                hint: 'Need Strength >= 1.25 x next highest stat. Currently: ' + strCheck.details
+            };
+        }
+
+        if (text.indexOf('defense 25% higher than your second highest stat') !== -1) {
+            var defCheck = ratioCheckSingleVsSecondHighest(stats, 'defense', 1.25);
+            return {
+                gymName: gym.name,
+                requirementText: gym.requirementText,
+                pass: defCheck.pass,
+                progress: defCheck.progress,
+                hint: 'Need Defense >= 1.25 x next highest stat. Currently: ' + defCheck.details
+            };
+        }
+
+        if (text.indexOf('speed 25% higher than your second highest stat') !== -1) {
+            var speedCheck = ratioCheckSingleVsSecondHighest(stats, 'speed', 1.25);
+            return {
+                gymName: gym.name,
+                requirementText: gym.requirementText,
+                pass: speedCheck.pass,
+                progress: speedCheck.progress,
+                hint: 'Need Speed >= 1.25 x next highest stat. Currently: ' + speedCheck.details
+            };
+        }
+
+        if (text.indexOf('dexterity 25% higher than your second highest stat') !== -1) {
+            var dexCheck = ratioCheckSingleVsSecondHighest(stats, 'dexterity', 1.25);
+            return {
+                gymName: gym.name,
+                requirementText: gym.requirementText,
+                pass: dexCheck.pass,
+                progress: dexCheck.progress,
+                hint: 'Need Dexterity >= 1.25 x next highest stat. Currently: ' + dexCheck.details
+            };
+        }
+
+        return null;
+    }
+
+    function renderSpecialtyAdvisor(evaluations, stats) {
+        var summaryNode = document.getElementById('gym-specialty-summary');
+        var listNode = document.getElementById('gym-specialty-list');
+        if (!summaryNode || !listNode) {
+            return;
+        }
+
+        var ratioGyms = evaluations.filter(Boolean);
+        if (!ratioGyms.length) {
+            summaryNode.innerHTML = '<strong>No ratio rules found</strong><div>Check text formatting in assets/text/specialty_gyms.txt.</div>';
+            listNode.innerHTML = '';
+            return;
+        }
+
+        var bestTarget = ratioGyms.slice().sort(function(a, b){
+            return (b.progress || 0) - (a.progress || 0);
+        })[0];
+
+        var recommendation = bestTarget
+            ? (bestTarget.pass
+                ? 'You currently meet the ratio for ' + bestTarget.gymName + '.'
+                : 'Closest ratio target: ' + bestTarget.gymName + '.')
+            : 'No recommendation available yet.';
+
+        summaryNode.innerHTML = [
+            '<strong>Recommendation</strong>',
+            '<div>' + recommendation + '</div>',
+            '<div>Strength: ' + Math.round(stats.strength).toLocaleString() +
+            ' | Defense: ' + Math.round(stats.defense).toLocaleString() +
+            ' | Speed: ' + Math.round(stats.speed).toLocaleString() +
+            ' | Dexterity: ' + Math.round(stats.dexterity).toLocaleString() + '</div>'
+        ].join('');
+
+        listNode.innerHTML = ratioGyms.map(function(item){
+            var badgeClass = item.pass ? 'is-ready' : 'is-progress';
+            var badgeText = item.pass ? 'Ready' : 'In Progress';
+            return [
+                '<section class="gym-specialty-item">',
+                '<div class="gym-specialty-head">',
+                '<span class="gym-specialty-title">' + item.gymName + '</span>',
+                '<span class="gym-specialty-badge ' + badgeClass + '">' + badgeText + '</span>',
+                '</div>',
+                '<div class="gym-specialty-content">',
+                '<p>' + item.hint + '</p>',
+                '</div>',
+                '</section>'
+            ].join('');
+        }).join('');
+    }
+
+    function loadSpecialtyAdvisor(apiKey) {
+        setSpecialtyStatus('Loading specialty gym ratios...', false);
+
+        fetchLiveBattleStats(apiKey)
+            .then(function(liveStats){
+                var fallbackStats = getStatsFromLatestDatasets();
+                state.latestStats = liveStats || fallbackStats;
+
+                var statValues = state.latestStats;
+                if (!statValues || !Number.isFinite(statValues.strength) || !Number.isFinite(statValues.defense) || !Number.isFinite(statValues.speed) || !Number.isFinite(statValues.dexterity)) {
+                    setSpecialtyStatus('Could not determine current stats for ratio comparison.', true);
+                    return;
+                }
+
+                var evaluations = SPECIALTY_GYMS.map(function(gym){
+                    return evaluateSpecialtyGym(gym, statValues);
+                }).filter(Boolean);
+
+                renderSpecialtyAdvisor(evaluations, statValues);
+
+                if (liveStats) {
+                    setSpecialtyStatus('Specialty ratios loaded (hardcoded) and compared against live battlestats.', false);
+                } else {
+                    setSpecialtyStatus('Specialty ratios loaded (hardcoded). Comparison uses latest log-derived stats.', false);
+                }
+            })
+            .catch(function(error){
+                setSpecialtyStatus('Failed to load specialty ratio data: ' + error.message, true);
+            });
     }
 
     function updateVisiblePointsCount() {
@@ -429,9 +755,9 @@
         }
     }
 
-    function buildApiUrlWithCursor(apiKey, beforeTimestamp) {
+    function buildGymLogsApiUrl(apiKey, beforeTimestamp) {
         var logQuery = LOG_IDS.join('%2C');
-        var url = 'https://api.torn.com/v2/user/log?log=' + logQuery + '&limit=100&key=' + encodeURIComponent(apiKey);
+        var url = 'https://api.torn.com/v2/user/log?log=' + logQuery + '&limit=' + GYM_LOG_LIMIT + '&key=' + encodeURIComponent(apiKey);
         if (Number.isFinite(beforeTimestamp) && beforeTimestamp > 0) {
             url += '&to=' + Math.floor(beforeTimestamp);
         }
@@ -459,7 +785,9 @@
         var maxPages = 30;
 
         for (var page = 1; page <= maxPages; page += 1) {
-            var response = await fetch(buildApiUrlWithCursor(apiKey, beforeTimestamp));
+            var logsUrl = buildGymLogsApiUrl(apiKey, beforeTimestamp);
+            console.log('API endpoint:', logsUrl);
+            var response = await fetch(logsUrl);
             if (!response.ok) {
                 throw new Error('HTTP ' + response.status);
             }
@@ -581,9 +909,11 @@
                 setStatus('Loaded ' + pointsCount.toLocaleString() + ' points across ' + state.datasets.length + ' stat lines.', false);
                 renderSeriesToggles();
                 makeChart();
+                loadSpecialtyAdvisor(apiKey);
             })
             .catch(function(error){
                 setStatus('Failed to load gym stat logs: ' + error.message, true);
+                loadSpecialtyAdvisor(apiKey);
             });
     }
 
