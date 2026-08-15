@@ -4,15 +4,19 @@
 
 .settingList {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(100%, 1120px);
+    gap: 16px;
+    align-items: start;
+}
+
+.settings-column {
+    display: grid;
     gap: 12px;
 }
 
 .api-key-card {
-    max-width: 720px;
-}
-
-.settingList {
-    width: min(100%, 760px);
+    max-width: none;
 }
 
 .settings-label {
@@ -72,4 +76,10 @@ select {
     border-radius: 5px;
     background-color: #1b2230;
     color: #e6ecfb;
+}
+
+@media (max-width: 760px) {
+    .settingList {
+        grid-template-columns: 1fr;
+    }
 }

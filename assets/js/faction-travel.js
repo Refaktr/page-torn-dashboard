@@ -13,6 +13,14 @@ const FLIGHT_TIMES_BY_DESTINATION = {
   "south africa": { standard: 282, airstrip: 197, wlt: 141, business: 85 }
 };
 
+const DESTINATION_ALIASES = {
+  uae: "United Arab Emirates",
+  uk: "United Kingdom",
+  cayman: "Cayman Islands",
+  "cayman island": "Cayman Islands",
+  "cayman islands": "Cayman Islands"
+};
+
 function normalizeTextKey(value) {
   return String(value ?? "").trim().toLowerCase();
 }
@@ -21,6 +29,16 @@ function normalizeDestination(rawDestination) {
   const value = String(rawDestination ?? "").trim();
   const country = value.includes(":") ? value.split(":")[0] : value;
   return normalizeTextKey(country);
+}
+
+function canonicalDestination(rawDestination) {
+  const destination = String(rawDestination ?? "").trim();
+  const normalized = normalizeDestination(destination);
+  return DESTINATION_ALIASES[normalized] || destination;
+}
+
+function isKnownTravelDestination(destination) {
+  return Boolean(FLIGHT_TIMES_BY_DESTINATION[normalizeDestination(destination)]);
 }
 
 function formatMinutesCompact(minutes) {
@@ -36,15 +54,29 @@ function formatMinutesCompact(minutes) {
 
 function parseDestinationFromStatusDescription(statusDescription) {
   const text = String(statusDescription ?? "").trim();
+  const inCountryMatch = text.match(/^in\s+(.+)$/i);
   const returnMatch = text.match(/\bfrom\s+(.+?)\s+to\s+torn\b/i);
   const outboundMatch = text.match(/\bfrom\s+(.+?)\s+to\s+(.+)$/i);
+  const directFlightMatch = text.match(/\b(?:traveling|flying)\s+to\s+(.+)$/i);
+
+  if (inCountryMatch?.[1]) {
+    const destination = canonicalDestination(inCountryMatch[1]);
+    return isKnownTravelDestination(destination) ? destination : "";
+  }
 
   if (returnMatch?.[1]) {
-    return returnMatch[1].trim();
+    const destination = canonicalDestination(returnMatch[1]);
+    return isKnownTravelDestination(destination) ? destination : "";
   }
 
   if (outboundMatch?.[2]) {
-    return normalizeTextKey(outboundMatch[2]) === "torn" ? outboundMatch[1].trim() : outboundMatch[2].trim();
+    const destination = canonicalDestination(normalizeTextKey(outboundMatch[2]) === "torn" ? outboundMatch[1] : outboundMatch[2]);
+    return isKnownTravelDestination(destination) ? destination : "";
+  }
+
+  if (directFlightMatch?.[1]) {
+    const destination = canonicalDestination(directFlightMatch[1]);
+    return isKnownTravelDestination(destination) ? destination : "";
   }
 
   return "";
@@ -72,8 +104,12 @@ function resolveTravelProfile(rawAircraft) {
 function getTravelInfo(member) {
   const travel = member?.travel || member?.status?.travel || null;
   const statusDescription = String(member?.status?.description ?? "");
+  const parsedDestination = parseDestinationFromStatusDescription(statusDescription);
+  const rawDestination = travel?.destination || travel?.country || travel?.location || travel?.city || parsedDestination;
+  const destination = canonicalDestination(rawDestination);
+  const isFlying = normalizeTextKey(member?.status?.state) === "traveling" || /\b(?:traveling|flying)\b/i.test(statusDescription);
 
-  if (!travel && !normalizeTextKey(statusDescription).includes("travel")) {
+  if (!isKnownTravelDestination(destination)) {
     return null;
   }
 
@@ -81,7 +117,8 @@ function getTravelInfo(member) {
   const delay = Number(rawDelay);
 
   return {
-    destination: travel?.destination || travel?.country || travel?.location || travel?.city || parseDestinationFromStatusDescription(statusDescription),
+    destination,
+    isFlying,
     aircraft: travel?.aircraft || travel?.flight_class || travel?.type || travel?.method || member?.status?.plane_image_type || "standard",
     profile: resolveTravelProfile(travel?.aircraft || travel?.flight_class || travel?.type || travel?.method || member?.status?.plane_image_type || "standard"),
     watchlistDelayMinutes: Number.isFinite(delay) && delay > 0 ? delay : 0
@@ -118,4 +155,4 @@ function formatTravelToastDetails(member) {
   return `Plane: ${formatPlaneTypeLabel(info.aircraft)} | Route: ${route} | Landing ETA: ${formatMinutesCompact(range.min)} - ${formatMinutesCompact(range.max)}${watchlistSuffix}`;
 }
 
-window.FactionTravel = { formatTravelToastDetails };
+window.FactionTravel = { formatTravelToastDetails, getTravelInfo };

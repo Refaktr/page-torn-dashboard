@@ -59,9 +59,18 @@
                         <button type="submit" class="primary">Load faction</button>
                         <button type="button" id="demo-button" class="secondary">Load demo data</button>
                         <button type="button" id="send-revivable-webhook-button" class="secondary">Send revivable members</button>
+                        <button type="button" id="send-country-enemies-webhook-button" class="secondary">Send country enemies</button>
                         <label class="faction-toggle-row" for="auto-refresh-toggle">
                             <input id="auto-refresh-toggle" type="checkbox">
                             <span>Auto-refresh every 5s</span>
+                        </label>
+                        <label class="faction-toggle-row" for="flight-webhook-toggle">
+                            <input id="flight-webhook-toggle" type="checkbox">
+                            <span>Send flight events to Discord</span>
+                        </label>
+                        <label class="faction-toggle-row" for="country-webhook-timer-toggle">
+                            <input id="country-webhook-timer-toggle" type="checkbox">
+                            <span>Send country enemies every 5m</span>
                         </label>
                     </div>
                 </form>

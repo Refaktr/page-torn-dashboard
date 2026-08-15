@@ -17,7 +17,10 @@ const form = document.getElementById("faction-form");
 const factionNameInput = document.getElementById("faction-name");
 const demoButton = document.getElementById("demo-button");
 const sendRevivableWebhookButton = document.getElementById("send-revivable-webhook-button");
+const sendCountryEnemiesWebhookButton = document.getElementById("send-country-enemies-webhook-button");
 const autoRefreshToggle = document.getElementById("auto-refresh-toggle");
+const flightWebhookToggle = document.getElementById("flight-webhook-toggle");
+const countryWebhookTimerToggle = document.getElementById("country-webhook-timer-toggle");
 const factionTitle = document.getElementById("faction-title");
 const memberCount = document.getElementById("member-count");
 const dataSource = document.getElementById("data-source");
@@ -35,6 +38,9 @@ let fairFightFaction = null;
 let previousStatusByMemberKey = {};
 let hasStatusBaseline = false;
 let toastContainer = null;
+let countryWebhookTimerId = null;
+const FLIGHT_WEBHOOK_STORAGE_KEY = "factionFlightWebhookEnabled";
+const COUNTRY_WEBHOOK_TIMER_STORAGE_KEY = "factionCountryWebhookTimerEnabled";
 
 function setMessage(text) {
   message.textContent = text;
@@ -60,6 +66,13 @@ function syncAutoRefresh() {
   }
 
   refreshTimerId = window.setInterval(() => refreshLiveRoster(true), 5000);
+}
+
+function stopCountryWebhookTimer() {
+  if (countryWebhookTimerId !== null) {
+    window.clearInterval(countryWebhookTimerId);
+    countryWebhookTimerId = null;
+  }
 }
 
 function resetStatusTracking() {
@@ -145,6 +158,15 @@ function notifyStatusChanges(changes, factionName) {
     const body = `${change.from} -> ${change.to} (${factionName})${travel ? ` | ${travel}` : ""}`;
     showStatusToast(`${change.name} status changed`, body);
   });
+
+  const flightChanges = changes.filter((change) => /travel/i.test(`${change.from} ${change.to}`));
+  if (!flightWebhookToggle.checked || !flightChanges.length) {
+    return;
+  }
+
+  window.FactionDiscord.sendFlightEvents(factionName, flightChanges).catch((error) => {
+    console.error("Flight event webhook failed", error);
+  });
 }
 
 async function loadFairFightScores(factionName, members) {
@@ -166,6 +188,47 @@ async function loadFairFightScores(factionName, members) {
     console.error("Fair fight lookup failed", error);
     setMessage(error instanceof Error ? error.message : "Fair Fight data unavailable.");
   }
+}
+
+async function sendCountryEnemiesWebhook(silent = false) {
+  const members = roster.getMembers();
+  const factionName = currentRequest?.factionName || factionTitle.textContent;
+
+  if (!members.length) {
+    if (!silent) {
+      setMessage("Load a faction before sending a country-enemy webhook.");
+    }
+    return false;
+  }
+
+  try {
+    await window.FactionDiscord.sendCountryEnemies(factionName, members, roster.getFairFightScores());
+    if (!silent) {
+      setMessage("Country enemies sent to Discord.");
+    }
+    return true;
+  } catch (error) {
+    console.error("Country enemy webhook failed", error);
+    if (!silent) {
+      setMessage(error instanceof Error ? error.message : "Unable to send the country-enemy webhook.");
+    }
+    return false;
+  }
+}
+
+function syncCountryWebhookTimer() {
+  stopCountryWebhookTimer();
+  if (!countryWebhookTimerToggle.checked || !currentRequest) {
+    return;
+  }
+
+  countryWebhookTimerId = window.setInterval(() => {
+    refreshLiveRoster(true).then((loaded) => {
+      if (loaded) {
+        sendCountryEnemiesWebhook(true);
+      }
+    });
+  }, 300000);
 }
 
 async function refreshLiveRoster(silent = false, clearOnError = false) {
@@ -211,6 +274,7 @@ async function refreshLiveRoster(silent = false, clearOnError = false) {
 
 function showDemoData() {
   stopAutoRefresh();
+  stopCountryWebhookTimer();
   autoRefreshToggle.checked = false;
   currentRequest = null;
   fairFightFaction = null;
@@ -245,6 +309,7 @@ form.addEventListener("submit", async (event) => {
   if (await refreshLiveRoster(false, true)) {
     await loadFairFightScores(currentRequest.factionName, roster.getMembers());
     syncAutoRefresh();
+    syncCountryWebhookTimer();
   }
 });
 
@@ -270,6 +335,30 @@ sendRevivableWebhookButton.addEventListener("click", async () => {
   } finally {
     sendRevivableWebhookButton.disabled = false;
   }
+});
+
+sendCountryEnemiesWebhookButton.addEventListener("click", async () => {
+  sendCountryEnemiesWebhookButton.disabled = true;
+  setMessage("Sending country enemies to Discord...");
+
+  try {
+    await sendCountryEnemiesWebhook();
+  } finally {
+    sendCountryEnemiesWebhookButton.disabled = false;
+  }
+});
+
+flightWebhookToggle.checked = localStorage.getItem(FLIGHT_WEBHOOK_STORAGE_KEY) === "true";
+flightWebhookToggle.addEventListener("change", () => {
+  localStorage.setItem(FLIGHT_WEBHOOK_STORAGE_KEY, String(flightWebhookToggle.checked));
+  setMessage(flightWebhookToggle.checked ? "Flight event webhooks enabled." : "Flight event webhooks disabled.");
+});
+
+countryWebhookTimerToggle.checked = localStorage.getItem(COUNTRY_WEBHOOK_TIMER_STORAGE_KEY) === "true";
+countryWebhookTimerToggle.addEventListener("change", () => {
+  localStorage.setItem(COUNTRY_WEBHOOK_TIMER_STORAGE_KEY, String(countryWebhookTimerToggle.checked));
+  syncCountryWebhookTimer();
+  setMessage(countryWebhookTimerToggle.checked ? "Country enemy webhooks will send every 5 minutes." : "Country enemy webhooks disabled.");
 });
 
 autoRefreshToggle.addEventListener("change", () => {

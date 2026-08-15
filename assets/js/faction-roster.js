@@ -141,6 +141,7 @@ function createRoster(memberBody, sortButtons) {
 
   return {
     getMembers: () => [...members],
+    getFairFightScores: () => ({ ...fairFightMap }),
     setMembers(nextMembers) {
       members = Array.isArray(nextMembers) ? [...nextMembers] : [];
       render();
