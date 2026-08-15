@@ -1,5 +1,6 @@
 (function () {
   const WEBHOOK_STORAGE_KEY = "discordWebhookUrl";
+  const COUNTRY_SCOUT_WEBHOOK_STORAGE_KEY = "countryScoutWebhookUrl";
   const EMBED_COLOR = 0x46cc71;
   const TRAVEL_COUNTRIES = [
     "Mexico",
@@ -15,8 +16,8 @@
     "South Africa"
   ];
 
-  function getSavedWebhookUrl() {
-    return sessionStorage.getItem(WEBHOOK_STORAGE_KEY) || localStorage.getItem(WEBHOOK_STORAGE_KEY) || "";
+  function getSavedWebhookUrl(storageKey = WEBHOOK_STORAGE_KEY) {
+    return sessionStorage.getItem(storageKey) || localStorage.getItem(storageKey) || "";
   }
 
   function getProfileUrl(member) {
@@ -88,13 +89,14 @@
     await sendPayload(webhookUrl, buildRevivablePayload(factionName, members));
   }
 
-  function buildFlightEventPayload(factionName, changes) {
+  function buildFlightEventPayload(factionName, changes, fairFightScores) {
     const fields = changes.slice(0, 25).map((change) => {
       const member = change.member || {};
       const profileUrl = getProfileUrl(member);
       const name = String(change.name ?? member.name ?? "Unknown member");
       const travelDetails = window.FactionTravel.formatTravelToastDetails(member);
-      const details = `${profileUrl ? `${profileUrl}\n` : ""}${travelDetails || `Status: ${change.from} -> ${change.to}`}`;
+      const battleStats = fairFightScores?.[member?.id]?.bsEstimateHuman || "Unavailable";
+      const details = `${profileUrl ? `${profileUrl}\n` : ""}${travelDetails || `Status: ${change.from} -> ${change.to}`}\nBattle stats: ${battleStats}`;
 
       return {
         name,
@@ -117,13 +119,13 @@
     };
   }
 
-  async function sendFlightEvents(factionName, changes) {
+  async function sendFlightEvents(factionName, changes, fairFightScores) {
     const webhookUrl = getSavedWebhookUrl();
     if (!webhookUrl) {
       throw new Error("No Discord webhook URL is saved. Add one in Settings first.");
     }
 
-    await sendPayload(webhookUrl, buildFlightEventPayload(factionName, changes));
+    await sendPayload(webhookUrl, buildFlightEventPayload(factionName, changes, fairFightScores));
   }
 
   function parseBattleStatEstimate(value) {
@@ -211,9 +213,9 @@
   }
 
   async function sendCountryEnemies(factionName, members, fairFightScores) {
-    const webhookUrl = getSavedWebhookUrl();
+    const webhookUrl = getSavedWebhookUrl(COUNTRY_SCOUT_WEBHOOK_STORAGE_KEY);
     if (!webhookUrl) {
-      throw new Error("No Discord webhook URL is saved. Add one in Settings first.");
+      throw new Error("No Country Scout webhook URL is saved. Add one in Settings first.");
     }
 
     const payloads = buildCountryEnemiesPayload(factionName, members, fairFightScores);

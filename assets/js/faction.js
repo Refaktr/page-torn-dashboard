@@ -164,7 +164,7 @@ function notifyStatusChanges(changes, factionName) {
     return;
   }
 
-  window.FactionDiscord.sendFlightEvents(factionName, flightChanges).catch((error) => {
+  window.FactionDiscord.sendFlightEvents(factionName, flightChanges, roster.getFairFightScores()).catch((error) => {
     console.error("Flight event webhook failed", error);
   });
 }

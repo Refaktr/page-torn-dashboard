@@ -4,6 +4,8 @@
     var FFSCOUTER_STORAGE_KEY = 'ffscouterApiKey';
     var DISCORD_WEBHOOK_STORAGE_KEY = 'discordWebhookUrl';
     var DISCORD_WEBHOOK_MODE_KEY = 'discordWebhookUrlStorageMode';
+    var COUNTRY_SCOUT_WEBHOOK_STORAGE_KEY = 'countryScoutWebhookUrl';
+    var COUNTRY_SCOUT_WEBHOOK_MODE_KEY = 'countryScoutWebhookUrlStorageMode';
 
     function readApiKeyFromStorage(storageKey, modeKey) {
         var sessionKey = sessionStorage.getItem(storageKey);
@@ -138,5 +140,15 @@
         noteId: 'discord-webhook-url-storage-note',
         storageKey: DISCORD_WEBHOOK_STORAGE_KEY,
         modeKey: DISCORD_WEBHOOK_MODE_KEY
+    });
+
+    initializeKeySetting({
+        inputId: 'country-scout-webhook-url-input',
+        saveButtonId: 'country-scout-webhook-url-save-button',
+        clearButtonId: 'country-scout-webhook-url-clear-button',
+        storageModeId: 'country-scout-webhook-url-storage-mode',
+        noteId: 'country-scout-webhook-url-storage-note',
+        storageKey: COUNTRY_SCOUT_WEBHOOK_STORAGE_KEY,
+        modeKey: COUNTRY_SCOUT_WEBHOOK_MODE_KEY
     });
 })();

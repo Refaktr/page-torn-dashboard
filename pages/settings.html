@@ -79,11 +79,11 @@
 
                 <div class="settings-column">
                     <div class="card api-key-card">
-                        <h3>Discord Webhook URL</h3>
-                        <p>Enter the Discord channel webhook URL used by the webhook page.</p>
+                        <h3>Flight Discord Webhook</h3>
+                        <p>Enter the Discord channel webhook URL for flight events and revivable-member reports.</p>
 
-                        <label for="discord-webhook-url-input" class="settings-label">Webhook URL</label>
-                        <input id="discord-webhook-url-input" type="text" placeholder="Enter your Discord webhook URL" autocomplete="off">
+                        <label for="discord-webhook-url-input" class="settings-label">Flight webhook URL</label>
+                        <input id="discord-webhook-url-input" type="text" placeholder="Enter your Flight Discord webhook URL" autocomplete="off">
 
                         <label for="discord-webhook-url-storage-mode" class="settings-label">Storage</label>
                         <select id="discord-webhook-url-storage-mode">
@@ -96,6 +96,26 @@
                             <button id="discord-webhook-url-clear-button" type="button" class="button-secondary">Clear</button>
                         </div>
                         <p class="settings-note" id="discord-webhook-url-storage-note">Session mode is safer on shared devices.</p>
+                    </div>
+
+                    <div class="card api-key-card">
+                        <h3>Country Scout Discord Webhook</h3>
+                        <p>Enter the Discord channel webhook URL for country enemy summaries.</p>
+
+                        <label for="country-scout-webhook-url-input" class="settings-label">Country Scout webhook URL</label>
+                        <input id="country-scout-webhook-url-input" type="text" placeholder="Enter your Country Scout Discord webhook URL" autocomplete="off">
+
+                        <label for="country-scout-webhook-url-storage-mode" class="settings-label">Storage</label>
+                        <select id="country-scout-webhook-url-storage-mode">
+                            <option value="session">Session only (clears when browser closes)</option>
+                            <option value="remember">Remember on this device</option>
+                        </select>
+
+                        <div class="settings-actions">
+                            <button id="country-scout-webhook-url-save-button" type="button">Save</button>
+                            <button id="country-scout-webhook-url-clear-button" type="button" class="button-secondary">Clear</button>
+                        </div>
+                        <p class="settings-note" id="country-scout-webhook-url-storage-note">Session mode is safer on shared devices.</p>
                     </div>
 
                     <div class="card">
