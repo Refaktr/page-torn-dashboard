@@ -32,6 +32,8 @@ const roster = createRoster(
 );
 
 let currentRequest = null;
+let ownFactionRequest = null;
+let ownFactionMembers = [];
 let refreshTimerId = null;
 let isRefreshing = false;
 let fairFightFaction = null;
@@ -65,7 +67,7 @@ function syncAutoRefresh() {
     return;
   }
 
-  refreshTimerId = window.setInterval(() => refreshLiveRoster(true), 5000);
+  refreshTimerId = window.setInterval(() => refreshLiveRoster(true), 10000);
 }
 
 function stopCountryWebhookTimer() {
@@ -202,7 +204,7 @@ async function sendCountryEnemiesWebhook(silent = false) {
   }
 
   try {
-    await window.FactionDiscord.sendCountryEnemies(factionName, members, roster.getFairFightScores());
+    await window.FactionDiscord.sendCountryEnemies(factionName, members, ownFactionRequest?.factionName || "Allies", ownFactionMembers, roster.getFairFightScores());
     if (!silent) {
       setMessage("Country enemies sent to Discord.");
     }
@@ -247,7 +249,13 @@ async function refreshLiveRoster(silent = false, clearOnError = false) {
       currentRequest = { ...currentRequest, factionName: faction.name, factionId: faction.id };
     }
 
-    const members = await fetchFactionMembers(currentRequest.factionId, currentRequest.apiKey);
+    const targetRosterRequest = fetchFactionMembers(currentRequest.factionId, currentRequest.apiKey);
+    const ownRosterRequest = refreshOwnFactionRoster().catch((error) => {
+      ownFactionRequest = null;
+      ownFactionMembers = [];
+      console.warn("Unable to load own faction roster", error);
+    });
+    const [members] = await Promise.all([targetRosterRequest, ownRosterRequest]);
     const changes = getStatusChanges(members);
     previousStatusByMemberKey = buildStatusSnapshot(members);
     hasStatusBaseline = true;
@@ -272,11 +280,29 @@ async function refreshLiveRoster(silent = false, clearOnError = false) {
   }
 }
 
+async function refreshOwnFactionRoster() {
+  const ownFactionName = getSavedKey("ownFactionName").trim();
+  if (!ownFactionName || !currentRequest || ownFactionName.toLowerCase() === currentRequest.factionName.toLowerCase()) {
+    ownFactionRequest = null;
+    ownFactionMembers = [];
+    return;
+  }
+
+  if (!ownFactionRequest || ownFactionRequest.factionName.toLowerCase() !== ownFactionName.toLowerCase()) {
+    const faction = await resolveFaction(ownFactionName, currentRequest.apiKey);
+    ownFactionRequest = { factionName: faction.name, factionId: faction.id };
+  }
+
+  ownFactionMembers = await fetchFactionMembers(ownFactionRequest.factionId, currentRequest.apiKey);
+}
+
 function showDemoData() {
   stopAutoRefresh();
   stopCountryWebhookTimer();
   autoRefreshToggle.checked = false;
   currentRequest = null;
+  ownFactionRequest = null;
+  ownFactionMembers = [];
   fairFightFaction = null;
   roster.clearFairFightScores();
   resetStatusTracking();
@@ -374,7 +400,7 @@ autoRefreshToggle.addEventListener("change", () => {
   }
 
   syncAutoRefresh();
-  setMessage("Auto-refresh enabled. Updating every 5 seconds.");
+  setMessage("Auto-refresh enabled. Updating both factions every 10 seconds.");
   refreshLiveRoster(true);
 });
 

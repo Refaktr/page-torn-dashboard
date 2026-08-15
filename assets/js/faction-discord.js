@@ -162,8 +162,8 @@
     return String(country ?? "").trim().toLowerCase();
   }
 
-  function buildCountryEnemiesPayload(factionName, members, fairFightScores) {
-    const byCountry = (Array.isArray(members) ? members : []).reduce((countries, member) => {
+  function groupMembersByCountry(members) {
+    return (Array.isArray(members) ? members : []).reduce((countries, member) => {
       const travel = window.FactionTravel.getTravelInfo(member);
       if (!travel?.destination) {
         return countries;
@@ -174,17 +174,38 @@
       countries[country].push({ member, travel });
       return countries;
     }, {});
+  }
+
+  function formatCompactMembers(entries, fairFightScores) {
+    if (!entries.length) {
+      return "None";
+    }
+
+    return entries.slice(0, 8).map(({ member, travel }) => {
+      const marker = travel.isFlying ? "->" : "@";
+      const battleStats = fairFightScores?.[member?.id]?.bsEstimateHuman || "--";
+      return `${marker} ${member?.name ?? "Unknown"} | BS ${battleStats}`;
+    }).join("\n");
+  }
+
+  function buildCountryEnemiesPayload(factionName, members, ownFactionName, ownFactionMembers, fairFightScores) {
+    const byCountry = groupMembersByCountry(members);
+    const alliesByCountry = groupMembersByCountry(ownFactionMembers);
 
     const knownCountries = new Map(TRAVEL_COUNTRIES.map((country) => [normalizeCountry(country), country]));
     const occupiedCountries = new Map(Object.entries(byCountry).map(([country, countryMembers]) => [normalizeCountry(country), { country, countryMembers }]));
     const countries = [
-      ...TRAVEL_COUNTRIES.map((country) => ({ country, countryMembers: occupiedCountries.get(normalizeCountry(country))?.countryMembers || [] })),
+      ...TRAVEL_COUNTRIES.map((country) => ({
+        country,
+        countryMembers: occupiedCountries.get(normalizeCountry(country))?.countryMembers || [],
+        allyMembers: alliesByCountry[country] || alliesByCountry[Object.keys(alliesByCountry).find((key) => normalizeCountry(key) === normalizeCountry(country))] || []
+      })),
       ...Array.from(occupiedCountries.entries())
         .filter(([country]) => !knownCountries.has(country))
-        .map(([, entry]) => entry)
+        .map(([, entry]) => ({ ...entry, allyMembers: [] }))
     ];
 
-    const embeds = countries.map(({ country, countryMembers }) => {
+    const embeds = countries.map(({ country, countryMembers, allyMembers }) => {
       const occupied = countryMembers.length > 0;
       const battleStatTotal = occupied ? getCountryBattleStatTotal(countryMembers, fairFightScores) : null;
       return {
@@ -192,14 +213,13 @@
           ? `${country} | ${countryMembers.length} enemy${countryMembers.length === 1 ? "" : " enemies"}`
           : `${country} | Clear`,
         description: occupied
-          ? `Estimated total battle stats: **${battleStatTotal}**`
+          ? `Enemy battle stats: **${battleStatTotal}**`
           : "No faction members detected in this country.",
         color: occupied ? 0xe74c3c : 0x46cc71,
-        fields: occupied ? countryMembers.slice(0, 25).map(({ member, travel }) => ({
-          name: String(member?.name ?? "Unknown member"),
-          value: `${getProfileUrl(member) ? `${getProfileUrl(member)}\n` : ""}${travel.isFlying ? `Flying to ${country}` : `In ${country}`}\nLevel ${member?.level ?? "?"}\nBattle stats: ${fairFightScores?.[member?.id]?.bsEstimateHuman || "Unavailable"}`,
-          inline: true
-        })) : undefined,
+        fields: [
+          { name: `${ownFactionName || "Allies"} (${allyMembers.length})`, value: formatCompactMembers(allyMembers), inline: true },
+          { name: `${factionName || "Enemies"} (${countryMembers.length})`, value: formatCompactMembers(countryMembers, fairFightScores), inline: true }
+        ],
         footer: { text: "Torn Dashboard Faction Scout" },
         timestamp: new Date().toISOString()
       };
@@ -212,13 +232,13 @@
     }));
   }
 
-  async function sendCountryEnemies(factionName, members, fairFightScores) {
+  async function sendCountryEnemies(factionName, members, ownFactionName, ownFactionMembers, fairFightScores) {
     const webhookUrl = getSavedWebhookUrl(COUNTRY_SCOUT_WEBHOOK_STORAGE_KEY);
     if (!webhookUrl) {
       throw new Error("No Country Scout webhook URL is saved. Add one in Settings first.");
     }
 
-    const payloads = buildCountryEnemiesPayload(factionName, members, fairFightScores);
+    const payloads = buildCountryEnemiesPayload(factionName, members, ownFactionName, ownFactionMembers, fairFightScores);
     await Promise.all(payloads.map((payload) => sendPayload(webhookUrl, payload)));
   }
 
