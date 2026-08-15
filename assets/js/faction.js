@@ -6,6 +6,21 @@ const STATUS_CLASS_MAP = {
   yellow: "status-yellow"
 };
 
+const FLIGHT_VARIANCE_PERCENT = 0.03;
+const FLIGHT_TIMES_BY_DESTINATION = {
+  mexico: { standard: 24, airstrip: 17, wlt: 12, business: 7 },
+  "cayman islands": { standard: 33, airstrip: 23, wlt: 17, business: 10 },
+  canada: { standard: 39, airstrip: 27, wlt: 19, business: 12 },
+  hawaii: { standard: 127, airstrip: 89, wlt: 63, business: 38 },
+  "united kingdom": { standard: 151, airstrip: 106, wlt: 75, business: 45 },
+  argentina: { standard: 158, airstrip: 111, wlt: 79, business: 47 },
+  switzerland: { standard: 166, airstrip: 116, wlt: 83, business: 50 },
+  japan: { standard: 213, airstrip: 149, wlt: 107, business: 64 },
+  china: { standard: 229, airstrip: 160, wlt: 114, business: 69 },
+  "united arab emirates": { standard: 257, airstrip: 180, wlt: 128, business: 77 },
+  "south africa": { standard: 282, airstrip: 197, wlt: 141, business: 85 }
+};
+
 const DEMO_DATA = {
   factionName: "Warband of the Fallen",
   members: [
@@ -31,7 +46,11 @@ const DEMO_DATA = {
       position: "Recruiter",
       status: { description: "Traveling", color: "blue" },
       last_action: { relative: "1 hour ago" },
-      is_revivable: false
+      is_revivable: false,
+      travel: {
+        destination: "Mexico",
+        aircraft: "Standard"
+      }
     },
     {
       name: "Iris Noct",
@@ -61,6 +80,10 @@ let autoRefreshTimerId = null;
 let isRefreshing = false;
 let fairFightMap = {};
 let fairFightLoadedForFaction = null;
+let flightTimesByDestination = { ...FLIGHT_TIMES_BY_DESTINATION };
+let previousStatusByMemberKey = {};
+let hasStatusBaseline = false;
+let toastContainer = null;
 let sortState = {
   key: null,
   direction: "asc"
@@ -131,6 +154,11 @@ function setLiveRequestContext(factionName, apiKey, factionId = null) {
     apiKey,
     factionId
   };
+}
+
+function resetStatusTracking() {
+  previousStatusByMemberKey = {};
+  hasStatusBaseline = false;
 }
 
 function statusClass(color) {
@@ -249,6 +277,382 @@ function formatFairFight(member) {
   const fairFightText = typeof entry.fairFight === "number" ? entry.fairFight.toFixed(2) : "?";
   const bsText = entry.bsEstimateHuman || "?";
   return `${fairFightText} (${bsText})`;
+}
+
+function getMemberIdentityKey(member) {
+  if (member?.id !== undefined && member?.id !== null && member?.id !== "") {
+    return `id:${member.id}`;
+  }
+
+  const fallbackName = normalizeTextKey(member?.name);
+  return fallbackName ? `name:${fallbackName}` : "";
+}
+
+function getMemberStatusDescription(member) {
+  return String(member?.status?.description ?? "Unknown").trim();
+}
+
+function getMemberStatusSignal(member) {
+  const state = normalizeTextKey(member?.status?.state);
+  if (state) {
+    return state;
+  }
+
+  // Fallback if state is unavailable: strip variable countdown-style fragments.
+  const description = normalizeTextKey(member?.status?.description)
+    .replace(/\b\d+\s*(second|seconds|minute|minutes|hour|hours|day|days)\b/g, "")
+    .replace(/\bfor\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return description || "unknown";
+}
+
+function buildStatusSnapshot(members) {
+  return (Array.isArray(members) ? members : []).reduce((snapshot, member) => {
+    const key = getMemberIdentityKey(member);
+    if (!key) {
+      return snapshot;
+    }
+
+    snapshot[key] = {
+      name: String(member?.name ?? "Unknown"),
+      status: getMemberStatusDescription(member),
+      signal: getMemberStatusSignal(member)
+    };
+    return snapshot;
+  }, {});
+}
+
+function collectStatusChanges(previousSnapshot, members) {
+  const changes = [];
+
+  (Array.isArray(members) ? members : []).forEach((member) => {
+    const key = getMemberIdentityKey(member);
+    if (!key || !previousSnapshot[key]) {
+      return;
+    }
+
+    const oldStatus = String(previousSnapshot[key].status ?? "").trim();
+    const oldSignal = String(previousSnapshot[key].signal ?? "").trim();
+    const newStatus = getMemberStatusDescription(member);
+    const newSignal = getMemberStatusSignal(member);
+
+    if (!oldSignal || !newSignal || oldSignal === newSignal) {
+      return;
+    }
+
+    changes.push({
+      name: String(member?.name ?? previousSnapshot[key].name ?? "Unknown"),
+      from: oldStatus,
+      to: newStatus,
+      member
+    });
+  });
+
+  return changes;
+}
+
+function notifyStatusChanges(changes, factionName) {
+  if (!Array.isArray(changes) || !changes.length) {
+    return;
+  }
+
+  changes.slice(0, 6).forEach((change) => {
+    const title = `${change.name} status changed`;
+    const travelLine = formatTravelToastDetails(change.member);
+    const body = travelLine
+      ? `${change.from} -> ${change.to} (${factionName}) | ${travelLine}`
+      : `${change.from} -> ${change.to} (${factionName})`;
+    showStatusToast(title, body);
+  });
+}
+
+function getToastContainer() {
+  if (toastContainer && document.body.contains(toastContainer)) {
+    return toastContainer;
+  }
+
+  toastContainer = document.createElement("div");
+  toastContainer.id = "faction-toast-container";
+  toastContainer.className = "faction-toast-container";
+  document.body.appendChild(toastContainer);
+  return toastContainer;
+}
+
+function removeToast(toastNode) {
+  if (!toastNode) {
+    return;
+  }
+
+  toastNode.classList.add("is-closing");
+  window.setTimeout(() => {
+    if (toastNode.parentNode) {
+      toastNode.parentNode.removeChild(toastNode);
+    }
+  }, 180);
+}
+
+function showStatusToast(title, description) {
+  const container = getToastContainer();
+  const toast = document.createElement("button");
+  toast.type = "button";
+  toast.className = "faction-toast";
+
+  const titleNode = document.createElement("strong");
+  titleNode.className = "faction-toast-title";
+  titleNode.textContent = title;
+
+  const descNode = document.createElement("span");
+  descNode.className = "faction-toast-body";
+  descNode.textContent = description;
+
+  toast.appendChild(titleNode);
+  toast.appendChild(descNode);
+  toast.title = "Click to dismiss";
+  toast.addEventListener("click", () => {
+    removeToast(toast);
+  });
+
+  container.appendChild(toast);
+
+  window.setTimeout(() => {
+    removeToast(toast);
+  }, 30000);
+
+  while (container.childElementCount > 8) {
+    removeToast(container.firstElementChild);
+  }
+}
+
+function normalizeTextKey(value) {
+  return String(value ?? "").trim().toLowerCase();
+}
+
+function formatMinutesCompact(minutes) {
+  if (!Number.isFinite(minutes) || minutes <= 0) {
+    return "?";
+  }
+
+  const rounded = Math.round(minutes);
+  const hours = Math.floor(rounded / 60);
+  const mins = rounded % 60;
+
+  if (!hours) {
+    return `${mins}m`;
+  }
+
+  if (!mins) {
+    return `${hours}h`;
+  }
+
+  return `${hours}h ${mins}m`;
+}
+
+function normalizeDestination(rawDestination) {
+  const value = String(rawDestination ?? "").trim();
+  if (!value) {
+    return "";
+  }
+
+  const country = value.includes(":") ? value.split(":")[0] : value;
+  return normalizeTextKey(country);
+}
+
+function parseDestinationFromStatusDescription(statusDescription) {
+  const text = String(statusDescription ?? "").trim();
+  if (!text) {
+    return "";
+  }
+
+  const returnToTornMatch = text.match(/\bfrom\s+(.+?)\s+to\s+torn\b/i);
+  if (returnToTornMatch && returnToTornMatch[1]) {
+    return returnToTornMatch[1].trim();
+  }
+
+  const returnFromMatch = text.match(/\bto\s+torn\b.*\bfrom\s+(.+)$/i);
+  if (returnFromMatch && returnFromMatch[1]) {
+    return returnFromMatch[1].trim();
+  }
+
+  const outboundFromMatch = text.match(/\bfrom\s+(.+?)\s+to\s+(.+)$/i);
+  if (outboundFromMatch && outboundFromMatch[2]) {
+    const destination = outboundFromMatch[2].trim();
+    if (normalizeTextKey(destination) !== "torn") {
+      return destination;
+    }
+
+    if (outboundFromMatch[1]) {
+      return outboundFromMatch[1].trim();
+    }
+  }
+
+  const toMatch = text.match(/\bto\s+(.+?)(?:\s+from\s+.+)?$/i);
+  if (toMatch && toMatch[1]) {
+    const destination = toMatch[1].trim();
+    if (normalizeTextKey(destination) !== "torn") {
+      return destination;
+    }
+  }
+
+  const fromMatch = text.match(/\bfrom\s+(.+)$/i);
+  if (fromMatch && fromMatch[1]) {
+    return fromMatch[1].trim();
+  }
+
+  return "";
+}
+
+function formatPlaneTypeLabel(rawPlaneType) {
+  const value = String(rawPlaneType ?? "").trim();
+  if (!value) {
+    return "Unknown plane";
+  }
+
+  return value
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function resolveTravelProfile(rawAircraft) {
+  const text = normalizeTextKey(rawAircraft);
+  if (!text) {
+    return "standard";
+  }
+
+  if (text.includes("light_aircraft") || text.includes("light aircraft")) {
+    return "airstrip";
+  }
+
+  if (text.includes("private_jet") || text.includes("private jet")) {
+    return "wlt";
+  }
+
+  if (text.includes("business_jet") || text.includes("business jet")) {
+    return "business";
+  }
+
+  if (text.includes("business")) {
+    return "business";
+  }
+
+  if (text.includes("wlt") || text.includes("wright") || text.includes("learjet")) {
+    return "wlt";
+  }
+
+  if (text.includes("airstrip") || text.includes("private")) {
+    return "airstrip";
+  }
+
+  return "standard";
+}
+
+function getTravelInfo(member) {
+  const travel = member?.travel || member?.status?.travel || null;
+  const statusDescription = String(member?.status?.description ?? "");
+  const statusText = normalizeTextKey(statusDescription);
+  const isTraveling = !!travel || statusText.includes("travel");
+
+  if (!isTraveling) {
+    return null;
+  }
+
+  const destination =
+    travel?.destination ||
+    travel?.country ||
+    travel?.location ||
+    travel?.city ||
+    travel?.area ||
+    parseDestinationFromStatusDescription(statusDescription) ||
+    "";
+
+  const aircraft =
+    travel?.aircraft ||
+    travel?.flight_class ||
+    travel?.type ||
+    travel?.method ||
+    member?.status?.plane_image_type ||
+    "standard";
+
+  const watchlistDelayRaw =
+    travel?.watchlist_delay_minutes ??
+    travel?.watchlist_delay ??
+    travel?.delay_minutes ??
+    travel?.delay ??
+    0;
+
+  const watchlistDelayMinutes = Number(watchlistDelayRaw);
+
+  return {
+    destination,
+    aircraft,
+    profile: resolveTravelProfile(aircraft),
+    watchlistDelayMinutes: Number.isFinite(watchlistDelayMinutes) && watchlistDelayMinutes > 0
+      ? watchlistDelayMinutes
+      : 0
+  };
+}
+
+function getTravelEtaRange(info) {
+  if (!info) {
+    return null;
+  }
+
+  const destinationKey = normalizeDestination(info.destination);
+  const base = destinationKey && flightTimesByDestination[destinationKey]
+    ? flightTimesByDestination[destinationKey][info.profile] || flightTimesByDestination[destinationKey].standard
+    : null;
+
+  if (!base) {
+    return null;
+  }
+
+  const min = Math.max(1, base * (1 - FLIGHT_VARIANCE_PERCENT)) + info.watchlistDelayMinutes;
+  const max = base * (1 + FLIGHT_VARIANCE_PERCENT) + info.watchlistDelayMinutes;
+
+  return {
+    min,
+    max
+  };
+}
+
+function formatTravelToastDetails(member) {
+  const info = getTravelInfo(member);
+  if (!info) {
+    return "";
+  }
+
+  const planeLabel = formatPlaneTypeLabel(info.aircraft);
+  const destinationText = info.destination ? info.destination : "Unknown destination";
+  const range = getTravelEtaRange(info);
+
+  if (!range) {
+    return `Plane: ${planeLabel} | Route: ${destinationText}`;
+  }
+
+  const etaText = `${formatMinutesCompact(range.min)} - ${formatMinutesCompact(range.max)}`;
+  const watchlistSuffix = info.watchlistDelayMinutes > 0 ? ` (+watchlist ${info.watchlistDelayMinutes}m)` : "";
+  return `Plane: ${planeLabel} | Route: ${destinationText} | Landing ETA: ${etaText}${watchlistSuffix}`;
+}
+
+function formatTravelEta(member) {
+  const info = getTravelInfo(member);
+  if (!info) {
+    return "-";
+  }
+
+  const range = getTravelEtaRange(info);
+  if (!range) {
+    return "Traveling";
+  }
+
+  const etaText = `${formatMinutesCompact(range.min)} - ${formatMinutesCompact(range.max)}`;
+
+  if (info.watchlistDelayMinutes > 0) {
+    return `${etaText} (+watchlist)`;
+  }
+
+  return etaText;
 }
 
 function renderMembers() {
@@ -419,8 +823,16 @@ async function refreshLiveRoster(silent = false, clearOnError = false) {
     }
 
     const members = await loadFactionMembersFromApi(factionId, currentLiveRequest.apiKey);
+    const statusChanges = hasStatusBaseline
+      ? collectStatusChanges(previousStatusByMemberKey, members)
+      : [];
+
+    previousStatusByMemberKey = buildStatusSnapshot(members);
+    hasStatusBaseline = true;
+
     setMembers(members);
     setSummary(factionName, members.length, "Live API");
+    notifyStatusChanges(statusChanges, factionName);
 
     console.log("Loaded faction data", { factionName, factionId, memberCount: members.length });
 
@@ -445,6 +857,7 @@ async function showDemoData() {
   stopAutoRefresh();
   autoRefreshToggle.checked = false;
   currentLiveRequest = null;
+  resetStatusTracking();
   setMessage("Rendering demo roster.");
   setMembers(DEMO_DATA.members);
   setSummary(DEMO_DATA.factionName, DEMO_DATA.members.length, "Demo data");
@@ -467,6 +880,7 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
+  resetStatusTracking();
   setLiveRequestContext(factionName, apiKey);
   setSummary(factionName, "...", "Live API");
 

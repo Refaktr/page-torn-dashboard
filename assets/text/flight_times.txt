@@ -1,0 +1,14 @@
+Flight Information (Without Book)
+Destination                             	Travel Time 	                                Standard Cost
+                                Standard 	Airstrip 	WLT benefit 	Business Class
+Mexico: Ciudad Juárez 	        24min 	    17min 	    12min 	        7min 	            $6,500
+Cayman Islands: George Town 	33min 	    23min 	    17min 	        10min 	            $10,000
+Canada: Toronto 	            39min 	    27min 	    19min 	        12min 	            $9,000
+Hawaii: Honolulu 	            2h 7min 	1h 29min 	1h 3min 	    38min 	            $11,000
+United Kingdom: London      	2h 31min 	1h 46min 	1h 15min 	    45min 	            $18,000
+Argentina: Buenos Aires     	2h 38min 	1h 51min 	1h 19min 	    47min 	            $21,000
+Switzerland: Zurich         	2h 46min 	1h 56min 	1h 23min 	    50min 	            $27,000
+Japan: Tokyo                	3h 33min 	2h 29min 	1h 47min 	    1h 4min 	        $32,000
+China: Beijing              	3h 49min 	2h 40min 	1h 54min 	    1h 9min 	        $35,000
+United Arab Emirates: Dubai 	4h 17min 	3h 00min 	2h 8min 	    1h 17min 	        $32,000
+South Africa: Johannesburg  	4h 42min 	3h 17min 	2h 21min 	    1h 25min 	        $40,000 
