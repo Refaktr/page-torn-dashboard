@@ -1,7 +1,7 @@
 (function(){
     var STORAGE_KEY = 'tornApiKey';
     var LOG_IDS = [5300, 5301, 5302, 5303];
-    var GYM_LOG_LIMIT = 100;
+    var GYM_LOG_LIMIT = 1000;
     var SPECIALTY_GYMS = [
         {
             name: 'Balboas Gym',
@@ -755,37 +755,13 @@
         }
     }
 
-    function buildGymLogsApiUrl(apiKey, beforeTimestamp) {
-        var logQuery = LOG_IDS.join('%2C');
-        var url = 'https://api.torn.com/v2/user/log?log=' + logQuery + '&limit=' + GYM_LOG_LIMIT + '&key=' + encodeURIComponent(apiKey);
-        if (Number.isFinite(beforeTimestamp) && beforeTimestamp > 0) {
-            url += '&to=' + Math.floor(beforeTimestamp);
-        }
-        return url;
-    }
-
-    function entryUniqueKey(entry) {
-        var detailsId = entry && entry.details && entry.details.id ? entry.details.id : 'x';
-        var timestamp = entry && entry.timestamp ? entry.timestamp : 'x';
-        var dataString = '';
-        try {
-            dataString = JSON.stringify(entry && entry.data ? entry.data : {});
-        } catch (error) {
-            dataString = '';
-        }
-
-        return String(timestamp) + '|' + String(detailsId) + '|' + dataString;
+    function buildGymLogsCategoryApiUrl(apiKey, logId) {
+        return 'https://api.torn.com/v2/user/log?log=' + logId + '&limit=' + GYM_LOG_LIMIT + '&key=' + encodeURIComponent(apiKey);
     }
 
     async function fetchAllGymLogs(apiKey) {
-        var allEntries = [];
-        var seen = Object.create(null);
-        var beforeTimestamp = null;
-        var previousOldest = null;
-        var maxPages = 30;
-
-        for (var page = 1; page <= maxPages; page += 1) {
-            var logsUrl = buildGymLogsApiUrl(apiKey, beforeTimestamp);
+        var responses = await Promise.all(LOG_IDS.map(async function(logId){
+            var logsUrl = buildGymLogsCategoryApiUrl(apiKey, logId);
             console.log('API endpoint:', logsUrl);
             var response = await fetch(logsUrl);
             if (!response.ok) {
@@ -797,50 +773,12 @@
                 throw new Error(payload.error.error || 'Torn API returned an error');
             }
 
-            var pageEntries = normalizeLogEntries(payload).filter(function(entry){
+            return normalizeLogEntries(payload).filter(function(entry){
                 return entry && entry.data && entry.details;
             });
+        }));
 
-            if (!pageEntries.length) {
-                break;
-            }
-
-            var oldestTimestamp = null;
-            pageEntries.forEach(function(entry){
-                var key = entryUniqueKey(entry);
-                if (!seen[key]) {
-                    seen[key] = true;
-                    allEntries.push(entry);
-                }
-
-                if (typeof entry.timestamp === 'number' && Number.isFinite(entry.timestamp)) {
-                    if (oldestTimestamp === null || entry.timestamp < oldestTimestamp) {
-                        oldestTimestamp = entry.timestamp;
-                    }
-                }
-            });
-
-            if (!Number.isFinite(oldestTimestamp)) {
-                break;
-            }
-
-            if (previousOldest !== null && oldestTimestamp >= previousOldest) {
-                break;
-            }
-
-            previousOldest = oldestTimestamp;
-            beforeTimestamp = oldestTimestamp - 1;
-
-            if (beforeTimestamp <= 0) {
-                break;
-            }
-
-            if (page === maxPages) {
-                setStatus('Loaded partial history (pagination cap reached).', false);
-            }
-        }
-
-        return allEntries;
+        return responses.flat();
     }
 
     function configureSliderFromData() {
