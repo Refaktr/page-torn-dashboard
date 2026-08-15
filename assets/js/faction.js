@@ -125,10 +125,11 @@ function syncAutoRefreshState() {
   }, 5000);
 }
 
-function setLiveRequestContext(factionName, apiKey) {
+function setLiveRequestContext(factionName, apiKey, factionId = null) {
   currentLiveRequest = {
     factionName,
-    apiKey
+    apiKey,
+    factionId
   };
 }
 
@@ -294,7 +295,7 @@ function setMembers(members) {
   renderMembers();
 }
 
-async function loadFactionFromApi(factionName, apiKey) {
+async function resolveFactionFromApi(factionName, apiKey) {
   const searchUrl = `https://api.torn.com/v2/faction/search?name=${encodeURIComponent(factionName)}`;
   console.log("API endpoint:", searchUrl);
   const searchResponse = await fetch(searchUrl, {
@@ -309,12 +310,20 @@ async function loadFactionFromApi(factionName, apiKey) {
   }
 
   const searchData = await searchResponse.json();
-  const factionId = searchData?.search?.[0]?.id;
+  const faction = searchData?.search?.[0];
+  const factionId = faction?.id;
 
   if (!factionId) {
     throw new Error("No faction match found.");
   }
 
+  return {
+    factionId,
+    factionName: faction?.name || factionName
+  };
+}
+
+async function loadFactionMembersFromApi(factionId, apiKey) {
   const membersUrl = `https://api.torn.com/v2/faction/${factionId}/members`;
   console.log("API endpoint:", membersUrl);
   const membersResponse = await fetch(membersUrl, {
@@ -330,12 +339,7 @@ async function loadFactionFromApi(factionName, apiKey) {
 
   const membersData = await membersResponse.json();
 
-  console.log("Loaded faction data", { factionName, factionId, membersData });
-
-  return {
-    factionName,
-    members: Object.values(membersData?.members || {})
-  };
+  return Object.values(membersData?.members || {});
 }
 
 async function getFairFightData(userIdArray, apiKey) {
@@ -404,9 +408,21 @@ async function refreshLiveRoster(silent = false, clearOnError = false) {
   }
 
   try {
-    const data = await loadFactionFromApi(currentLiveRequest.factionName, currentLiveRequest.apiKey);
-    setMembers(data.members);
-    setSummary(data.factionName, data.members.length, "Live API");
+    let factionName = currentLiveRequest.factionName;
+    let factionId = currentLiveRequest.factionId;
+
+    if (!factionId) {
+      const resolved = await resolveFactionFromApi(factionName, currentLiveRequest.apiKey);
+      factionId = resolved.factionId;
+      factionName = resolved.factionName;
+      setLiveRequestContext(factionName, currentLiveRequest.apiKey, factionId);
+    }
+
+    const members = await loadFactionMembersFromApi(factionId, currentLiveRequest.apiKey);
+    setMembers(members);
+    setSummary(factionName, members.length, "Live API");
+
+    console.log("Loaded faction data", { factionName, factionId, memberCount: members.length });
 
     if (!silent) {
       setMessage("Roster loaded successfully.");
@@ -461,7 +477,7 @@ form.addEventListener("submit", async (event) => {
   }
 
   if (ffscouterApiKey) {
-    await loadFairFightForFaction(factionName, currentMembers, ffscouterApiKey);
+    await loadFairFightForFaction(currentLiveRequest.factionName, currentMembers, ffscouterApiKey);
   }
 
   syncAutoRefreshState();
