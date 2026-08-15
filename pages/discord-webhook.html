@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Webhook | Torn Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/discord-webhook.css">
+</head>
+<body class="page-discord-webhook">
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Torn Tools</h2>
+            <a href="../index.html">Dashboard</a>
+            <a href="./market.html">Market</a>
+            <a href="./company.html">Company</a>
+            <a href="./faction-scout.html">Faction Scouter</a>
+            <a href="./travel.html">Travel</a>
+            <a href="./financials.html">Financials</a>
+            <a href="./gym.html">Gym</a>
+            <a href="./crimes.html">Crimes</a>
+            <a href="./discord-webhook.html">Discord Webhook</a>
+            <a href="./settings.html">Settings</a>
+        </aside>
+
+        <main class="content">
+            <div class="header">
+                <h1>Discord Webhook</h1>
+                <span>Visit Ping</span>
+            </div>
+
+            <section class="card webhook-panel">
+                <h2>Webhook Status</h2>
+                <p id="webhook-status">Preparing to send a visit ping...</p>
+                <div class="webhook-actions">
+                    <button id="webhook-resend-button" type="button" class="secondary">Send Again</button>
+                    <a href="./settings.html" class="secondary webhook-link">Manage Webhook URL</a>
+                </div>
+            </section>
+
+            <section class="card webhook-note-panel">
+                <h3>How it works</h3>
+                <p>This page sends a Discord webhook message when you visit it. The URL is stored in Settings and the page uses a beacon-style POST so it can fire without waiting for a response.</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/discord-webhook.js"></script>
+</body>
+</html>

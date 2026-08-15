@@ -1,0 +1,45 @@
+.page-discord-webhook .webhook-panel,
+.page-discord-webhook .webhook-note-panel {
+    padding: 18px;
+}
+
+.page-discord-webhook .webhook-panel {
+    display: grid;
+    gap: 12px;
+    max-width: 760px;
+}
+
+.page-discord-webhook .webhook-panel h2,
+.page-discord-webhook .webhook-note-panel h3 {
+    margin: 0;
+}
+
+.page-discord-webhook .webhook-panel p,
+.page-discord-webhook .webhook-note-panel p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.page-discord-webhook .webhook-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.page-discord-webhook .webhook-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.page-discord-webhook .webhook-link:hover {
+    text-decoration: none;
+}
+
+.page-discord-webhook .webhook-status-send {
+    color: var(--accent-strong);
+    font-weight: 700;
+}

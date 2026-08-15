@@ -2,6 +2,8 @@
     var STORAGE_KEY = 'tornApiKey';
     var STORAGE_MODE_KEY = 'tornApiKeyStorageMode';
     var FFSCOUTER_STORAGE_KEY = 'ffscouterApiKey';
+    var DISCORD_WEBHOOK_STORAGE_KEY = 'discordWebhookUrl';
+    var DISCORD_WEBHOOK_MODE_KEY = 'discordWebhookUrlStorageMode';
 
     function readApiKeyFromStorage(storageKey, modeKey) {
         var sessionKey = sessionStorage.getItem(storageKey);
@@ -126,5 +128,15 @@
         noteId: 'ffscouter-api-key-storage-note',
         storageKey: FFSCOUTER_STORAGE_KEY,
         modeKey: 'ffscouterApiKeyStorageMode'
+    });
+
+    initializeKeySetting({
+        inputId: 'discord-webhook-url-input',
+        saveButtonId: 'discord-webhook-url-save-button',
+        clearButtonId: 'discord-webhook-url-clear-button',
+        storageModeId: 'discord-webhook-url-storage-mode',
+        noteId: 'discord-webhook-url-storage-note',
+        storageKey: DISCORD_WEBHOOK_STORAGE_KEY,
+        modeKey: DISCORD_WEBHOOK_MODE_KEY
     });
 })();
