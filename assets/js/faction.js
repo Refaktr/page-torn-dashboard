@@ -16,6 +16,7 @@ const DEMO_DATA = {
 const form = document.getElementById("faction-form");
 const factionNameInput = document.getElementById("faction-name");
 const demoButton = document.getElementById("demo-button");
+const sendRevivableWebhookButton = document.getElementById("send-revivable-webhook-button");
 const autoRefreshToggle = document.getElementById("auto-refresh-toggle");
 const factionTitle = document.getElementById("faction-title");
 const memberCount = document.getElementById("member-count");
@@ -248,6 +249,29 @@ form.addEventListener("submit", async (event) => {
 });
 
 demoButton.addEventListener("click", showDemoData);
+sendRevivableWebhookButton.addEventListener("click", async () => {
+  const members = roster.getMembers();
+  const factionName = currentRequest?.factionName || factionTitle.textContent;
+
+  if (!members.length) {
+    setMessage("Load a faction before sending a revivable-member webhook.");
+    return;
+  }
+
+  sendRevivableWebhookButton.disabled = true;
+  setMessage("Sending revivable members to Discord...");
+
+  try {
+    await window.FactionDiscord.sendRevivableMembers(factionName, members);
+    setMessage("Revivable members sent to Discord.");
+  } catch (error) {
+    console.error("Discord webhook send failed", error);
+    setMessage(error instanceof Error ? error.message : "Unable to send the Discord webhook.");
+  } finally {
+    sendRevivableWebhookButton.disabled = false;
+  }
+});
+
 autoRefreshToggle.addEventListener("change", () => {
   if (!autoRefreshToggle.checked) {
     stopAutoRefresh();
