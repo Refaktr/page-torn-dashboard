@@ -34,9 +34,13 @@ const roster = createRoster(
 let currentRequest = null;
 let ownFactionRequest = null;
 let ownFactionMembers = [];
+let ownFairFightScores = {};
+let targetFlightTimers = {};
+let ownFlightTimers = {};
+let targetLastKnownCountries = {};
+let ownLastKnownCountries = {};
 let refreshTimerId = null;
 let isRefreshing = false;
-let fairFightFaction = null;
 let previousStatusByMemberKey = {};
 let hasStatusBaseline = false;
 let toastContainer = null;
@@ -171,24 +175,33 @@ function notifyStatusChanges(changes, factionName) {
   });
 }
 
-async function loadFairFightScores(factionName, members) {
+async function refreshFairFightScores(targetMembers, friendlyMembers) {
   const apiKey = getSavedKey("ffscouterApiKey");
-  if (!apiKey || fairFightFaction === factionName) {
+  if (!apiKey) {
+    roster.clearFairFightScores();
+    ownFairFightScores = {};
     return;
   }
 
-  const memberIds = members.map((member) => member?.id).filter((id) => id != null);
-  if (!memberIds.length) {
-    return;
+  const targetIds = targetMembers.map((member) => member?.id).filter((id) => id != null);
+  const friendlyIds = friendlyMembers.map((member) => member?.id).filter((id) => id != null);
+  const [targetResult, friendlyResult] = await Promise.allSettled([
+    fetchFairFightScores(targetIds, apiKey),
+    fetchFairFightScores(friendlyIds, apiKey)
+  ]);
+
+  if (targetResult.status === "fulfilled") {
+    roster.setFairFightScores(targetResult.value);
+  } else {
+    roster.clearFairFightScores();
+    console.error("Opponent Fair Fight lookup failed", targetResult.reason);
   }
 
-  fairFightFaction = factionName;
-  try {
-    roster.setFairFightScores(await fetchFairFightScores(memberIds, apiKey));
-  } catch (error) {
-    fairFightFaction = null;
-    console.error("Fair fight lookup failed", error);
-    setMessage(error instanceof Error ? error.message : "Fair Fight data unavailable.");
+  if (friendlyResult.status === "fulfilled") {
+    ownFairFightScores = friendlyResult.value;
+  } else {
+    ownFairFightScores = {};
+    console.error("Friendly Fair Fight lookup failed", friendlyResult.reason);
   }
 }
 
@@ -204,7 +217,7 @@ async function sendCountryEnemiesWebhook(silent = false) {
   }
 
   try {
-    await window.FactionDiscord.sendCountryEnemies(factionName, members, ownFactionRequest?.factionName || "Allies", ownFactionMembers, roster.getFairFightScores());
+    await window.FactionDiscord.sendCountryEnemies(factionName, members, ownFactionRequest?.factionName || "Allies", ownFactionMembers, roster.getFairFightScores(), ownFairFightScores, targetFlightTimers, ownFlightTimers, targetLastKnownCountries, ownLastKnownCountries);
     if (!silent) {
       setMessage("Country enemies sent to Discord.");
     }
@@ -256,6 +269,15 @@ async function refreshLiveRoster(silent = false, clearOnError = false) {
       console.warn("Unable to load own faction roster", error);
     });
     const [members] = await Promise.all([targetRosterRequest, ownRosterRequest]);
+    await refreshFairFightScores(members, ownFactionMembers);
+    targetFlightTimers = window.FactionFlightTimers.reconcile(`faction:${currentRequest.factionId}`, members);
+    targetLastKnownCountries = window.FactionFlightTimers.getLocations(`faction:${currentRequest.factionId}`);
+    ownFlightTimers = ownFactionRequest
+      ? window.FactionFlightTimers.reconcile(`faction:${ownFactionRequest.factionId}`, ownFactionMembers)
+      : {};
+    ownLastKnownCountries = ownFactionRequest
+      ? window.FactionFlightTimers.getLocations(`faction:${ownFactionRequest.factionId}`)
+      : {};
     const changes = getStatusChanges(members);
     previousStatusByMemberKey = buildStatusSnapshot(members);
     hasStatusBaseline = true;
@@ -303,7 +325,11 @@ function showDemoData() {
   currentRequest = null;
   ownFactionRequest = null;
   ownFactionMembers = [];
-  fairFightFaction = null;
+  ownFairFightScores = {};
+  targetFlightTimers = {};
+  ownFlightTimers = {};
+  targetLastKnownCountries = {};
+  ownLastKnownCountries = {};
   roster.clearFairFightScores();
   resetStatusTracking();
   roster.setMembers(DEMO_DATA.members);
@@ -327,13 +353,16 @@ form.addEventListener("submit", async (event) => {
 
   stopAutoRefresh();
   resetStatusTracking();
-  fairFightFaction = null;
+  ownFairFightScores = {};
+  targetFlightTimers = {};
+  ownFlightTimers = {};
+  targetLastKnownCountries = {};
+  ownLastKnownCountries = {};
   roster.clearFairFightScores();
   currentRequest = { factionName, apiKey, factionId: null };
   setSummary(factionName, "...", "Live API");
 
   if (await refreshLiveRoster(false, true)) {
-    await loadFairFightScores(currentRequest.factionName, roster.getMembers());
     syncAutoRefresh();
     syncCountryWebhookTimer();
   }

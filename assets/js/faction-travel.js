@@ -108,6 +108,7 @@ function getTravelInfo(member) {
   const rawDestination = travel?.destination || travel?.country || travel?.location || travel?.city || parsedDestination;
   const destination = canonicalDestination(rawDestination);
   const isFlying = normalizeTextKey(member?.status?.state) === "traveling" || /\b(?:traveling|flying)\b/i.test(statusDescription);
+  const isReturning = isFlying && /\bto\s+torn\b/i.test(statusDescription);
 
   if (!isKnownTravelDestination(destination)) {
     return null;
@@ -119,6 +120,7 @@ function getTravelInfo(member) {
   return {
     destination,
     isFlying,
+    isReturning,
     aircraft: travel?.aircraft || travel?.flight_class || travel?.type || travel?.method || member?.status?.plane_image_type || "standard",
     profile: resolveTravelProfile(travel?.aircraft || travel?.flight_class || travel?.type || travel?.method || member?.status?.plane_image_type || "standard"),
     watchlistDelayMinutes: Number.isFinite(delay) && delay > 0 ? delay : 0
@@ -139,6 +141,10 @@ function getTravelEtaRange(info) {
   };
 }
 
+function getMinimumTravelMinutes(info) {
+  return getTravelEtaRange(info)?.min ?? Number.NaN;
+}
+
 function formatTravelToastDetails(member) {
   const info = getTravelInfo(member);
   if (!info) {
@@ -155,4 +161,4 @@ function formatTravelToastDetails(member) {
   return `Plane: ${formatPlaneTypeLabel(info.aircraft)} | Route: ${route} | Landing ETA: ${formatMinutesCompact(range.min)} - ${formatMinutesCompact(range.max)}${watchlistSuffix}`;
 }
 
-window.FactionTravel = { formatTravelToastDetails, getTravelInfo };
+window.FactionTravel = { formatTravelToastDetails, getMinimumTravelMinutes, getTravelInfo };

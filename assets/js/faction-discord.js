@@ -165,7 +165,7 @@
   function groupMembersByCountry(members) {
     return (Array.isArray(members) ? members : []).reduce((countries, member) => {
       const travel = window.FactionTravel.getTravelInfo(member);
-      if (!travel?.destination) {
+      if (!travel?.destination || travel.isReturning) {
         return countries;
       }
 
@@ -176,21 +176,76 @@
     }, {});
   }
 
-  function formatCompactMembers(entries, fairFightScores) {
+  function getHospitalCountry(statusDescription) {
+    const match = String(statusDescription ?? "").match(/^in an?\s+(.+?)\s+hospital\b/i);
+    if (!match?.[1]) {
+      return "";
+    }
+
+    const countryByAdjective = {
+      argentinian: "Argentina",
+      caymanian: "Cayman Islands",
+      canadian: "Canada",
+      chinese: "China",
+      hawaiian: "Hawaii",
+      japanese: "Japan",
+      mexican: "Mexico",
+      "south african": "South Africa",
+      swiss: "Switzerland",
+      "united arab emirates": "United Arab Emirates",
+      emirati: "United Arab Emirates",
+      british: "United Kingdom"
+    };
+
+    return countryByAdjective[String(match[1]).trim().toLowerCase()] || "";
+  }
+
+  function groupHospitalizedMembersByCountry(members, lastKnownCountries) {
+    return (Array.isArray(members) ? members : []).reduce((countries, member) => {
+      const statusDescription = String(member?.status?.description ?? "");
+      const isHospitalized = String(member?.status?.state ?? "").toLowerCase() === "hospital" || /\bhospital/i.test(statusDescription);
+      const country = getHospitalCountry(statusDescription) || lastKnownCountries?.[member?.id]?.destination;
+
+      if (!isHospitalized || !country) {
+        return countries;
+      }
+
+      countries[country] = countries[country] || [];
+      countries[country].push({ member, status: "hospital" });
+      return countries;
+    }, {});
+  }
+
+  function formatArrivalTime(timestamp) {
+    return new Date(timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function formatCompactMembers(entries, fairFightScores, flightTimers) {
     if (!entries.length) {
       return "None";
     }
 
     return entries.slice(0, 8).map(({ member, travel }) => {
-      const marker = travel.isFlying ? "->" : "@";
+      const marker = travel?.isFlying ? "✈️" : travel ? "📍" : "🏥";
       const battleStats = fairFightScores?.[member?.id]?.bsEstimateHuman || "--";
-      return `${marker} ${member?.name ?? "Unknown"} | BS ${battleStats}`;
+      const timer = flightTimers?.[member?.id];
+      const arrival = travel?.isFlying && timer?.earliestArrivalAt ? ` | ETA ${formatArrivalTime(timer.earliestArrivalAt)}` : "";
+      return `${marker} ${member?.name ?? "Unknown"} | BS ${battleStats}${arrival}`;
     }).join("\n");
   }
 
-  function buildCountryEnemiesPayload(factionName, members, ownFactionName, ownFactionMembers, fairFightScores) {
+  function buildCountryEnemiesPayload(factionName, members, ownFactionName, ownFactionMembers, fairFightScores, ownFairFightScores, flightTimers, ownFlightTimers, lastKnownCountries, ownLastKnownCountries) {
     const byCountry = groupMembersByCountry(members);
     const alliesByCountry = groupMembersByCountry(ownFactionMembers);
+    const hospitalizedEnemiesByCountry = groupHospitalizedMembersByCountry(members, lastKnownCountries);
+    const hospitalizedAlliesByCountry = groupHospitalizedMembersByCountry(ownFactionMembers, ownLastKnownCountries);
+
+    Object.entries(hospitalizedEnemiesByCountry).forEach(([country, entries]) => {
+      byCountry[country] = [...(byCountry[country] || []), ...entries];
+    });
+    Object.entries(hospitalizedAlliesByCountry).forEach(([country, entries]) => {
+      alliesByCountry[country] = [...(alliesByCountry[country] || []), ...entries];
+    });
 
     const knownCountries = new Map(TRAVEL_COUNTRIES.map((country) => [normalizeCountry(country), country]));
     const occupiedCountries = new Map(Object.entries(byCountry).map(([country, countryMembers]) => [normalizeCountry(country), { country, countryMembers }]));
@@ -217,8 +272,8 @@
           : "No faction members detected in this country.",
         color: occupied ? 0xe74c3c : 0x46cc71,
         fields: [
-          { name: `${ownFactionName || "Allies"} (${allyMembers.length})`, value: formatCompactMembers(allyMembers), inline: true },
-          { name: `${factionName || "Enemies"} (${countryMembers.length})`, value: formatCompactMembers(countryMembers, fairFightScores), inline: true }
+          { name: `${ownFactionName || "Allies"} (${allyMembers.length})`, value: formatCompactMembers(allyMembers, ownFairFightScores, ownFlightTimers), inline: true },
+          { name: `${factionName || "Enemies"} (${countryMembers.length})`, value: formatCompactMembers(countryMembers, fairFightScores, flightTimers), inline: true }
         ],
         footer: { text: "Torn Dashboard Faction Scout" },
         timestamp: new Date().toISOString()
@@ -232,13 +287,13 @@
     }));
   }
 
-  async function sendCountryEnemies(factionName, members, ownFactionName, ownFactionMembers, fairFightScores) {
+  async function sendCountryEnemies(factionName, members, ownFactionName, ownFactionMembers, fairFightScores, ownFairFightScores, flightTimers, ownFlightTimers, lastKnownCountries, ownLastKnownCountries) {
     const webhookUrl = getSavedWebhookUrl(COUNTRY_SCOUT_WEBHOOK_STORAGE_KEY);
     if (!webhookUrl) {
       throw new Error("No Country Scout webhook URL is saved. Add one in Settings first.");
     }
 
-    const payloads = buildCountryEnemiesPayload(factionName, members, ownFactionName, ownFactionMembers, fairFightScores);
+    const payloads = buildCountryEnemiesPayload(factionName, members, ownFactionName, ownFactionMembers, fairFightScores, ownFairFightScores, flightTimers, ownFlightTimers, lastKnownCountries, ownLastKnownCountries);
     await Promise.all(payloads.map((payload) => sendPayload(webhookUrl, payload)));
   }
 
