@@ -310,6 +310,35 @@
 
 .page-faction .revive-yes { color: var(--good); }
 
+@media (max-width: 640px) {
+    .page-faction .faction-hero,
+    .page-faction .faction-status-strip {
+        grid-template-columns: 1fr;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .page-faction .faction-hero-card ul {
+        grid-template-columns: 1fr;
+    }
+
+    .page-faction .faction-controls,
+    .page-faction .faction-table-panel {
+        padding: 16px;
+    }
+
+    .page-faction .faction-button-row,
+    .page-faction .faction-table-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .page-faction .faction-button-row > button,
+    .page-faction .faction-toggle-row {
+        width: 100%;
+    }
+}
+
 .faction-toast-container {
     position: fixed;
     right: 18px;
@@ -383,59 +412,5 @@
     .page-faction .faction-table-panel,
     .page-faction .faction-hero {
         border-radius: 18px;
-    }
-}
-
-
-/* Additional responsive behavior */
-@media (max-width: 480px) {
-    .page-faction .faction-hero,
-    .page-faction .faction-controls,
-    .page-faction .faction-status-strip,
-    .page-faction .faction-table-panel {
-        padding: 14px;
-    }
-
-    .page-faction .faction-hero h2 {
-        font-size: 1.5rem;
-    }
-
-    .page-faction .faction-hero-card {
-        padding: 14px;
-    }
-
-    .page-faction .faction-hero-card ul {
-        grid-template-columns: 1fr;
-    }
-
-    .page-faction .faction-button-row {
-        width: 100%;
-    }
-
-    .page-faction .faction-button-row > * {
-        width: 100%;
-    }
-
-    .page-faction .faction-status-strip {
-        gap: 10px;
-    }
-
-    .page-faction .faction-table-toolbar {
-        gap: 10px;
-    }
-
-    .page-faction .faction-table-wrap {
-        margin-inline: -2px;
-        border-radius: 14px;
-    }
-
-    .page-faction table {
-        min-width: 760px;
-    }
-
-    .faction-toast-container {
-        right: 12px;
-        bottom: 12px;
-        width: calc(100vw - 24px);
     }
 }

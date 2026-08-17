@@ -77,6 +77,10 @@ body::before {
     color: var(--text);
 }
 
+.sidebar-toggle {
+    display: none;
+}
+
 .sidebar a {
     display: block;
     padding: 12px 12px;
@@ -102,6 +106,7 @@ body::before {
     padding: 4px 0 0;
     overflow: auto;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 14px;
     align-content: start;
 }
@@ -270,10 +275,62 @@ body::before {
     .container {
         width: min(100% - 20px, 1220px);
         padding-top: 18px;
+        gap: 12px;
+    }
+
+    .sidebar {
+        padding: 10px;
+        border-radius: 16px;
+    }
+
+    .sidebar h2 {
+        margin: 0;
+        padding: 8px 10px;
+    }
+
+    .sidebar-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 11px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .sidebar-toggle::after {
+        content: "+";
+        font-size: 1.25rem;
+        line-height: 1;
+    }
+
+    .sidebar-toggle[aria-expanded="true"]::after {
+        content: "-";
+    }
+
+    .sidebar a,
+    .sidebar .api-call-ticker {
+        display: none;
+    }
+
+    .sidebar.is-open a,
+    .sidebar.is-open .api-call-ticker {
+        display: block;
+    }
+
+    .sidebar.is-open .api-call-ticker {
+        margin: 12px 0;
     }
 
     .cards {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .card--wide {
@@ -283,83 +340,28 @@ body::before {
     .header {
         flex-direction: column;
         align-items: flex-start;
-    }
-}
-
-
-/* Additional responsive behavior */
-@media (max-width: 480px) {
-    .container {
-        width: calc(100% - 16px);
-        padding-top: 12px;
-        padding-bottom: 20px;
-        gap: 12px;
-    }
-
-    .sidebar {
-        padding: 14px 12px;
-        border-radius: 18px;
-    }
-
-    .sidebar h2 {
-        margin-bottom: 12px;
-        padding: 6px 8px;
-    }
-
-    .sidebar a {
-        padding: 11px 10px;
-        margin-bottom: 6px;
-    }
-
-    .content {
-        gap: 12px;
-    }
-
-    .header {
         gap: 8px;
     }
 
     .header h1 {
-        font-size: clamp(1.9rem, 10vw, 2.5rem);
+        font-size: 2.1rem;
     }
 
-    .card {
-        padding: 16px 16px 14px;
+    .content {
+        min-width: 0;
+        gap: 12px;
     }
 
+    .card,
     .page-placeholder {
-        padding: 18px;
+        padding: 16px;
+        border-radius: 16px;
     }
 
-    .api-call-ticker {
-        padding: 12px 14px;
-    }
-
-    .primary,
-    .secondary {
-        width: 100%;
-        min-height: 44px;
-    }
-
-    .card--wide {
-        grid-column: auto;
-    }
-}
-
-@media (max-width: 360px) {
-    .container {
-        width: calc(100% - 12px);
-    }
-
-    .sidebar {
-        padding: 12px 10px;
-    }
-
-    .card {
-        padding: 14px 14px 12px;
-    }
-
-    .header h1 {
-        font-size: 1.85rem;
+    button,
+    input,
+    select,
+    textarea {
+        max-width: 100%;
     }
 }
