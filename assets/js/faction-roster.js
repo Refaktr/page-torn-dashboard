@@ -99,13 +99,13 @@ function createRoster(memberBody, sortButtons) {
       const revive = member.is_revivable ? '<span class="revive-badge revive-yes">Yes</span>' : "";
 
       return `<tr>
+        <td><span class="fair-fight-score">${escapeHtml(formatFairFight(member))}</span></td>
         <td>${name}</td>
         <td>${escapeHtml(member.level ?? "")}</td>
-        <td>${escapeHtml(member.position ?? "")}</td>
         <td><span class="status-badge ${STATUS_CLASS_MAP[status.color] || "status-default"}">${escapeHtml(status.description ?? "")}</span></td>
+        <td>${escapeHtml(member.position ?? "")}</td>
         <td>${revive}</td>
         <td>${escapeHtml(member.last_action?.relative ?? "")}</td>
-        <td><span class="fair-fight-score">${escapeHtml(formatFairFight(member))}</span></td>
         <td>${attack}</td>
       </tr>`;
     }).join("");
