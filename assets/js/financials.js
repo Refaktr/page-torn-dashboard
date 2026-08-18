@@ -78,7 +78,15 @@
         return 'other';
     }
 
-    function getPrimaryMoneyValue(data) {
+    function getPrimaryMoneyValue(details, data) {
+        var title = details && typeof details.title === 'string' ? details.title.toLowerCase() : '';
+        var quantity = getNumber(data.quantity);
+        var costEach = getNumber(data.cost_each);
+
+        if (title.indexOf('abroad buy') !== -1 && quantity !== null && costEach !== null) {
+            return quantity * costEach;
+        }
+
         var candidates = [
             getNumber(data.cost_total),
             getNumber(data.total_value),
@@ -99,7 +107,7 @@
 
     function formatMoneyCell(details, data) {
         var action = getActionType(details);
-        var amount = getPrimaryMoneyValue(data || {});
+        var amount = getPrimaryMoneyValue(details, data || {});
 
         if (amount === null) {
             return '<span class="financials-money financials-money-neutral">-</span>';
