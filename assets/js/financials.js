@@ -1,6 +1,6 @@
 (function(){
     var PAGE_SIZE = 10;
-    var LOGS_API_URL = 'https://api.torn.com/v2/user/log?log=1225%2C1226%2C4200%2C1113%2C4210%2C1112%2C5510%2C5511';
+    var LOGS_API_URL = 'https://api.torn.com/v2/user/log?log=1225%2C1226%2C4200%2C1113%2C4210%2C1112%2C5510%2C5511%2C4200%2C4201';
     var NETWORTH_API_URL = 'https://api.torn.com/v2/user/networth';
 
     var state = {
